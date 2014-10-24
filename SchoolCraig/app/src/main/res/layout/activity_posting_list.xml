@@ -1,0 +1,54 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical"
+   	tools:context="com.cs278.schoolcraig.PostingListActivity"
+	tools:layout="@android:layout/list_posting_layout" >
+
+	<fragment
+	    android:id="@+id/posting_list"
+	    android:name="com.cs278.schoolcraig.PostingListFragment"
+	    android:layout_width="match_parent"
+	    android:layout_height="0dip"
+	    android:layout_weight="1"
+	    android:layout_marginLeft="5dip"
+	    android:layout_marginRight="5dip"
+	    android:layout_marginBottom="5dip"
+        tools:layout="@layout/list_posting_layout" />
+	
+	<View
+	    android:layout_width="fill_parent"
+	    android:layout_height="1dip"
+	    android:background="@android:color/darker_gray" />
+	
+	<LinearLayout 
+	    android:layout_width = "fill_parent" 
+	    android:layout_height="wrap_content"
+	    android:orientation="horizontal"
+	    style="?android:attr/buttonBarStyle" >
+	    
+		<Button 
+		    android:id="@+id/add_posting_button"
+		    android:layout_width="0dip"
+		    android:layout_height="wrap_content"
+		    android:layout_weight="1"
+		    android:gravity="center"
+		    android:text="@string/add_posting_string"
+		    android:onClick="addPostingButtonClick"
+		    style="?android:attr/buttonBarButtonStyle" />
+		
+		<Button 
+		    android:id="@+id/filter_posting_button"
+		    android:layout_width="0dip"
+		    android:layout_height="wrap_content"
+		    android:layout_weight="1"
+		    android:gravity="center"
+		    android:text="@string/filter_postings"
+		    android:onClick="filterPostingButtonClick"
+		    style="?android:attr/buttonBarButtonStyle" />
+		
+	</LinearLayout>
+	
+</LinearLayout>
+	

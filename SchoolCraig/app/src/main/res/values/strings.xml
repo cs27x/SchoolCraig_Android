@@ -1,0 +1,44 @@
+<resources>
+    <string name="app_name">SchoolCraig</string>
+    <string name="title_posting_detail">Posting Information</string>
+    <string name="title_posting_list">Postings</string>
+    <string name="empty">Empty</string>
+    <string name="add_posting_string">Add Posting</string>
+    <string name="title_activity_add_posting">Add Posting</string>
+    <string name="hint_posting_title">Posting Title</string>
+    <string name="hint_posting_description">Posting Description</string>
+    <string name="hint_posting_price">Posting Price</string>
+    <string name="hint_posting_category">Posting Category</string>
+    <string name="category">Category:</string>
+    <string name="description">Description:</string>
+    <string name="posted">Posted:</string>
+    <string name="price">Price:</string>
+    <string name="contact">Contact:</string>
+    <string name="error_field_required">This field is required</string>
+    <string name="filter_postings">Filter Postings</string>
+    <string name="filter_posting_activity_title">Filter Postings</string>
+    <string name="done_string">Done</string>
+    <string name="update_string">Update</string>
+    <string name="logout_string">Logout</string>
+    <string name="dollar_sign">$</string>
+    <string name="to_dollar_sign">to $</string>
+    <string name="initial_price_range_val">0.00</string>
+
+    <!-- Strings related to login -->
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Password</string>
+    <string name="action_sign_in">Sign in or register</string>
+    <string name="action_sign_in_short">Sign in</string>
+
+    <string name="error_invalid_email">This email address is invalid</string>
+    <string name="error_invalid_password">This password is too short</string>
+    <string name="error_incorrect_password">This password is incorrect</string>
+    <string name="error_not_vandy_email">This is not a valid Vanderbilt.edu email</string>
+
+    <string-array name="filter_options">
+        <item>Reset Filters</item>
+        <item>Category</item>
+        <item>Price Range</item>
+        <item>By Date</item>
+    </string-array>
+</resources>
