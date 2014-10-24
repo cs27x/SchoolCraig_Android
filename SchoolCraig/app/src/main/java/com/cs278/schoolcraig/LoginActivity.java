@@ -38,6 +38,7 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor>{
      * Keep track of the login task to ensure we can cancel it if requested.
      */
     private UserLoginTask mAuthTask = null;
+    private AddNewUserTask mAddNewUserTask = null;
     private UserManagement userMgmt = null;
 
     // UI references.
@@ -104,7 +105,7 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor>{
      * errors are presented and no actual login attempt is made.
      */
     public void attemptLogin() {
-        if (mAuthTask != null) {
+        if (mAuthTask != null || mAddNewUserTask != null) {
             return;
         }
 
@@ -119,19 +120,16 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor>{
         boolean cancel = false;
         View focusView = null;
 
-
-        // Check for a valid password, if the user entered one.
-        if (!TextUtils.isEmpty(password) && !isPasswordValid(password)) {
+        if(TextUtils.isEmpty(password)) {
+            mPasswordView.setError(getString(R.string.error_field_required));
+            focusView = mPasswordView;
+            cancel = true;
+        } else if (!isPasswordValid(password)) {
             mPasswordView.setError(getString(R.string.error_invalid_password));
             focusView = mPasswordView;
             cancel = true;
         }
 
-        if(TextUtils.isEmpty(password)) {
-            mPasswordView.setError(getString(R.string.error_field_required));
-            focusView = mPasswordView;
-            cancel = true;
-        }
         if (TextUtils.isEmpty(email)) {
             mEmailView.setError(getString(R.string.error_field_required));
             focusView = mEmailView;
@@ -154,8 +152,20 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor>{
             // Show a progress spinner, and kick off a background task to
             // perform the user login attempt.
             showProgress(true);
-            mAuthTask = new UserLoginTask(email, password);
-            mAuthTask.execute((Void) null);
+
+            // TODO add logic to check if user exists with specified email. If so continue with
+            // authentication. If not then add the user via the API.
+
+            boolean userExists = true; // Hit the API to see if they already exist
+
+            if(userExists) {
+                mAuthTask = new UserLoginTask(email, password);
+                mAuthTask.execute((Void) null);
+            } else {
+                // TODO add user using API with an AsyncTask
+                mAddNewUserTask = new AddNewUserTask(email, password);
+                mAddNewUserTask.execute((Void) null);
+            }
         }
     }
     private boolean isEmailValid(String email) {
@@ -167,7 +177,6 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor>{
     }
 
     private boolean isPasswordValid(String password) {
-        //TODO: Replace with password verification
         return password.length() > 4;
     }
 
@@ -276,8 +285,6 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor>{
 
         @Override
         protected Boolean doInBackground(Void... params) {
-            // TODO: attempt authentication against a network service.
-
             // TODO verify email/password using API VerifyLogin or add new user using API AddNewUser if user with that email doesn't exist
 
             return true;
@@ -299,6 +306,45 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor>{
         @Override
         protected void onCancelled() {
             mAuthTask = null;
+            showProgress(false);
+        }
+    }
+
+    /**
+     * Represents an asynchronous login/registration task used to authenticate
+     * the user.
+     */
+    public class AddNewUserTask extends AsyncTask<Void, Void, Boolean> {
+        private final String mEmail;
+        private final String mPassword;
+
+        AddNewUserTask(String email, String password) {
+            mEmail = email;
+            mPassword = password;
+        }
+
+        @Override
+        protected Boolean doInBackground(Void... params) {
+            // TODO add new user via API
+            return true;
+        }
+
+        @Override
+        protected void onPostExecute(final Boolean success) {
+            mAddNewUserTask = null;
+            showProgress(false);
+            if (success) {
+                userMgmt.addUserEmail(mEmail);
+                startPostingListActivityFinishLogin();
+            } else {
+                mPasswordView.setError(getString(R.string.error_incorrect_password));
+                mPasswordView.requestFocus();
+            }
+        }
+
+        @Override
+        protected void onCancelled() {
+            mAddNewUserTask = null;
             showProgress(false);
         }
     }

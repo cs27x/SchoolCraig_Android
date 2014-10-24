@@ -24,7 +24,7 @@ public class Posting {
 
     // Date String must be in format "M/d/yyyy h:mm AM or PM"
     // "month/day/4-digit-year hour:minute AM-or-PM"
-    // TODO add image
+    // TODO add image next iteration
     public Posting(int id, String title, String description, double price, String poster, String category, String creationDate) {
     	log_class = this.getClass().getSimpleName();
         this.id = id;
