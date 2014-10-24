@@ -110,7 +110,8 @@ public class PostingAdapter extends BaseAdapter implements Filterable {
 		return convertView;
 	}
 
-    // TODO remove once connected to API. Just there so local testing will add new posting to listview
+    // TODO remove once connected to API. Just there so local testing will add new posting to listview.
+    // Will be pulled down using API on listview opening back up.
     public void addEvent(Posting newPosting) {
         this.mData.add(newPosting);
         this.notifyDataSetChanged();
