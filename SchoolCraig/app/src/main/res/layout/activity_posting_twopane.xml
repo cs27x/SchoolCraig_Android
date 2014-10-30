@@ -1,0 +1,78 @@
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+	<LinearLayout 
+	    android:layout_width="match_parent"
+	    android:layout_height="0dip"
+	    android:layout_weight="1"
+	    android:baselineAligned="false"
+	    android:divider="?android:attr/dividerHorizontal"
+	    android:orientation="horizontal"
+	    android:showDividers="middle"
+	    tools:context="com.cs278.schoolcraig.EventListActivity" >
+	
+	    <!--
+	    This layout is a two-pane layout for the Postings
+	    master/detail flow. See res/values-large/refs.xml and
+	    res/values-sw600dp/refs.xml for an example of layout aliases
+	    that replace the single-pane version of the layout with
+	    this two-pane version.
+	
+	    For more on layout aliases, see:
+	    http://developer.android.com/training/multiscreen/screensizes.html#TaskUseAliasFilters
+	    -->
+	
+	    <fragment
+	        android:id="@+id/posting_list"
+	        android:name="com.cs278.schoolcraig.PostingListFragment"
+	        android:layout_width="0dp"
+	        android:layout_height="match_parent"
+	        android:layout_weight="1"
+	        tools:layout="@android:layout/list_content" />
+	
+	    <FrameLayout
+	        android:id="@+id/posting_detail_container"
+	        android:layout_width="0dp"
+	        android:layout_height="match_parent"
+	        android:layout_weight="3" />
+	
+	</LinearLayout>
+	
+	<View
+	    android:layout_width="fill_parent"
+	    android:layout_height="1dip"
+	    android:background="@android:color/darker_gray" />
+	
+	<LinearLayout 
+	    android:layout_width = "fill_parent" 
+	    android:layout_height="wrap_content"
+	    android:orientation="horizontal"
+	    style="?android:attr/buttonBarStyle" >
+	    
+		<Button 
+		    android:id="@+id/add_posting_button"
+		    android:layout_width="0dip"
+		    android:layout_height="wrap_content"
+		    android:layout_weight="1"
+		    android:gravity="center"
+		    android:text="@string/add_posting_string"
+		    android:onClick="addPostingButtonClick"
+		    style="?android:attr/buttonBarButtonStyle" />
+		
+		<Button 
+		    android:id="@+id/filter_Posting_button"
+		    android:layout_width="0dip"
+		    android:layout_height="wrap_content"
+		    android:layout_weight="1"
+		    android:gravity="center"
+		    android:text="@string/filter_postings"
+		    android:onClick="filterPostingButtonClick"
+		    style="?android:attr/buttonBarButtonStyle" />
+		
+	</LinearLayout>
+	
+</LinearLayout>
