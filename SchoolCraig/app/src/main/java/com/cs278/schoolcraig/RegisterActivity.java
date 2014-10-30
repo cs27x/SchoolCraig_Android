@@ -25,7 +25,8 @@ import java.util.List;
 
 
 public class RegisterActivity extends Activity implements LoaderManager.LoaderCallbacks<Cursor> {
-    private UserRegisterTask mRegisterTask = null;
+//    private UserRegisterTask mRegisterTask = null;
+    private UserRegisterLoginTask mRegLoginTask = null;
     private UserManagement userMgmt = null;
     private View mProgressView = null;
     private View mRegisterFormView = null;
@@ -79,7 +80,11 @@ public class RegisterActivity extends Activity implements LoaderManager.LoaderCa
      * errors are presented and no actual login attempt is made.
      */
     public void attemptRegister() {
-        if (mRegisterTask != null) {
+//        if (mRegisterTask != null) {
+//            return;
+//        }
+
+        if(mRegLoginTask != null){
             return;
         }
 
@@ -160,8 +165,10 @@ public class RegisterActivity extends Activity implements LoaderManager.LoaderCa
             // perform the user login attempt.
             showProgress(true);
 
-            mRegisterTask = new UserRegisterTask(firstName, lastName, email, password);
-            mRegisterTask.execute((Void) null);
+//            mRegisterTask = new UserRegisterTask(firstName, lastName, email, password);
+//            mRegisterTask.execute((Void) null);
+            mRegLoginTask = new UserRegisterLoginTask(RegisterActivity.this, firstName, lastName, email, password);
+            mRegLoginTask.execute((Void) null);
         }
     }
 
@@ -277,43 +284,43 @@ public class RegisterActivity extends Activity implements LoaderManager.LoaderCa
     /**
      * Represents an asynchronous registration task
      */
-    public class UserRegisterTask extends AsyncTask<Void, Void, Boolean> {
-        private final String mFirstName;
-        private final String mLastName;
-        private final String mEmail;
-        private final String mPassword;
-
-        UserRegisterTask(String firstName, String lastName, String email, String password) {
-            mFirstName = firstName;
-            mLastName = lastName;
-            mEmail = email;
-            mPassword = password;
-        }
-
-        @Override
-        protected Boolean doInBackground(Void... params) {
-            // TODO register new user via API
-
-            return true;
-        }
-
-        @Override
-        protected void onPostExecute(final Boolean success) {
-            mRegisterTask = null;
-            showProgress(false);
-            if (success) {
-                userMgmt.addUserEmail(mEmail);
-                startPostingListActivityFinishRegister();
-            } else {
-                regEmail.setError(getString(R.string.error_incorrect_password));
-                regEmail.requestFocus();
-            }
-        }
-
-        @Override
-        protected void onCancelled() {
-            mRegisterTask = null;
-            showProgress(false);
-        }
-    }
+//    public class UserRegisterTask extends AsyncTask<Void, Void, Boolean> {
+//        private final String mFirstName;
+//        private final String mLastName;
+//        private final String mEmail;
+//        private final String mPassword;
+//
+//        UserRegisterTask(String firstName, String lastName, String email, String password) {
+//            mFirstName = firstName;
+//            mLastName = lastName;
+//            mEmail = email;
+//            mPassword = password;
+//        }
+//
+//        @Override
+//        protected Boolean doInBackground(Void... params) {
+//            // TODO register new user via API
+//
+//            return true;
+//        }
+//
+//        @Override
+//        protected void onPostExecute(final Boolean success) {
+//            mRegisterTask = null;
+//            showProgress(false);
+//            if (success) {
+//                userMgmt.addUserEmail(mEmail);
+//                startPostingListActivityFinishRegister();
+//            } else {
+//                regEmail.setError(getString(R.string.error_incorrect_password));
+//                regEmail.requestFocus();
+//            }
+//        }
+//
+//        @Override
+//        protected void onCancelled() {
+//            mRegisterTask = null;
+//            showProgress(false);
+//        }
+//    }
 }
