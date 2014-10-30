@@ -4,7 +4,7 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.app.Activity;
-import android.app.LoaderManager.LoaderCallbacks;
+import android.app.LoaderManager;
 import android.content.CursorLoader;
 import android.content.Intent;
 import android.content.Loader;
@@ -15,87 +15,58 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.text.TextUtils;
-import android.view.KeyEvent;
 import android.view.View;
-import android.view.inputmethod.EditorInfo;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
-import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
 
 
-/**
- * A login screen that offers login via email/password.
-
- */
-public class LoginActivity extends Activity implements LoaderCallbacks<Cursor>{
-    /**
-     * Keep track of the login task to ensure we can cancel it if requested.
-     */
-    private UserLoginTask mAuthTask = null;
+public class RegisterActivity extends Activity implements LoaderManager.LoaderCallbacks<Cursor> {
+    private UserRegisterTask mRegisterTask = null;
     private UserManagement userMgmt = null;
+    private View mProgressView = null;
+    private View mRegisterFormView = null;
 
-    // UI references.
-    private AutoCompleteTextView mEmailView;
-    private EditText mPasswordView;
-    private View mProgressView;
-    private View mLoginFormView;
+    private EditText regFirstName = null;
+    private EditText regLastName =  null;
+    private AutoCompleteTextView regEmail;
+    private EditText regPword = null;
+    private EditText regPwordVerify = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
+        setContentView(R.layout.activity_register);
         userMgmt = UserManagement.getInstance(getApplicationContext());
-        checkUserLoggedInOrContinue();
 
-        // Set up the login form.
-        mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
+        regFirstName = (EditText) findViewById(R.id.reg_first_name);
+        regLastName = (EditText) findViewById(R.id.reg_last_name);
+        regEmail = (AutoCompleteTextView) findViewById(R.id.reg_email);
         populateAutoComplete();
+        regPword = (EditText) findViewById(R.id.reg_password);
+        regPwordVerify = (EditText) findViewById(R.id.reg_password_verify);
 
-        mPasswordView = (EditText) findViewById(R.id.password);
-        mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
-                if (id == R.id.login || id == EditorInfo.IME_NULL) {
-                    attemptLogin();
-                    return true;
-                }
-                return false;
-            }
-        });
+        mRegisterFormView = findViewById(R.id.register_form);
+        mProgressView = findViewById(R.id.register_progress);
 
-        mLoginFormView = findViewById(R.id.login_form);
-        mProgressView = findViewById(R.id.login_progress);
+        getAnyInfoFromIntent(getIntent());
     }
 
-    public void onClickRegisterUserButton(View view) {
-        Intent intent = new Intent(getApplicationContext(), RegisterActivity.class);
-        String email = mEmailView.getText().toString();
-        String pword = mPasswordView.getText().toString();
-        if(!TextUtils.isEmpty(email))
-            intent.putExtra("email", email);
-        if(!TextUtils.isEmpty(pword))
-            intent.putExtra("pword", pword);
-        startActivity(intent);
-    }
-
-    public void onClickLoginAttempt(View view) {
-        attemptLogin();
-    }
-
-    private void checkUserLoggedInOrContinue() {
-        if(userMgmt.userDetailsExist()) {
-            startPostingListActivityFinishLogin();
+    private void getAnyInfoFromIntent(Intent intent) {
+        if(intent.hasExtra("email"))
+            regEmail.setText(intent.getStringExtra("email"));
+        if(intent.hasExtra("pword")) {
+            String pword = intent.getStringExtra("pword");
+            regPword.setText(pword);
+            regPwordVerify.setText(pword);
         }
     }
 
-    private void startPostingListActivityFinishLogin() {
-        Intent intent = new Intent(getApplicationContext(), PostingListActivity.class);
-        finish();
-        startActivity(intent);
+    public void onClickRegisterButton(View v) {
+        attemptRegister();
     }
 
     private void populateAutoComplete() {
@@ -107,43 +78,76 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor>{
      * If there are form errors (invalid email, missing fields, etc.), the
      * errors are presented and no actual login attempt is made.
      */
-    public void attemptLogin() {
-        if (mAuthTask != null) {
+    public void attemptRegister() {
+        if (mRegisterTask != null) {
             return;
         }
 
         // Reset errors.
-        mEmailView.setError(null);
-        mPasswordView.setError(null);
+        regFirstName.setError(null);
+        regLastName.setError(null);
+        regEmail.setError(null);
+        regPword.setError(null);
+        regPwordVerify.setError(null);
 
         // Store values at the time of the login attempt.
-        String email = mEmailView.getText().toString();
-        String password = mPasswordView.getText().toString();
+        String firstName = regFirstName.getText().toString();
+        String lastName = regLastName.getText().toString();
+        String email = regEmail.getText().toString();
+        String password = regPword.getText().toString();
+        String passwordVerify = regPwordVerify.getText().toString();
 
         boolean cancel = false;
         View focusView = null;
 
         if(TextUtils.isEmpty(password)) {
-            mPasswordView.setError(getString(R.string.error_field_required));
-            focusView = mPasswordView;
+            regPword.setError(getString(R.string.error_field_required));
+            focusView = regPword;
             cancel = true;
         } else if (!isPasswordValid(password)) {
-            mPasswordView.setError(getString(R.string.error_invalid_password));
-            focusView = mPasswordView;
+            regPword.setError(getString(R.string.error_invalid_password));
+            focusView = regPword;
+            cancel = true;
+        }
+
+        if(TextUtils.isEmpty(password)) {
+            regPwordVerify.setError(getString(R.string.error_field_required));
+            focusView = regPwordVerify;
+            cancel = true;
+        } else if (!isPasswordValid(password)) {
+            regPwordVerify.setError(getString(R.string.error_invalid_password));
+            focusView = regPwordVerify;
+            cancel = true;
+        } else if (!password.equals(passwordVerify)) {
+            regPword.setError(getString(R.string.error_mismatch_passwords));
+            regPwordVerify.setError(getString(R.string.error_mismatch_passwords));
+            focusView = regPwordVerify;
             cancel = true;
         }
 
         if (TextUtils.isEmpty(email)) {
-            mEmailView.setError(getString(R.string.error_field_required));
-            focusView = mEmailView;
+            regEmail.setError(getString(R.string.error_field_required));
+            focusView = regEmail;
             cancel = true;
         } else if (!isEmailValid(email)) {
-            mEmailView.setError(getString(R.string.error_invalid_email));
-            focusView = mEmailView;
+            regEmail.setError(getString(R.string.error_invalid_email));
+            focusView = regEmail;
             cancel = true;
         } else if (!isVandyEmail(email)) {
-            mEmailView.setError(getString(R.string.error_not_vandy_email));
-            focusView = mEmailView;
+            regEmail.setError(getString(R.string.error_not_vandy_email));
+            focusView = regEmail;
+            cancel = true;
+        }
+
+        if (TextUtils.isEmpty(firstName)) {
+            regFirstName.setError(getString(R.string.error_field_required));
+            focusView = regFirstName;
+            cancel = true;
+        }
+
+        if (TextUtils.isEmpty(lastName)) {
+            regLastName.setError(getString(R.string.error_field_required));
+            focusView = regLastName;
             cancel = true;
         }
 
@@ -156,8 +160,8 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor>{
             // perform the user login attempt.
             showProgress(true);
 
-            mAuthTask = new UserLoginTask(email, password);
-            mAuthTask.execute((Void) null);
+            mRegisterTask = new UserRegisterTask(firstName, lastName, email, password);
+            mRegisterTask.execute((Void) null);
         }
     }
 
@@ -184,12 +188,12 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor>{
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
             int shortAnimTime = getResources().getInteger(android.R.integer.config_shortAnimTime);
 
-            mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
-            mLoginFormView.animate().setDuration(shortAnimTime).alpha(
+            mRegisterFormView.setVisibility(show ? View.GONE : View.VISIBLE);
+            mRegisterFormView.animate().setDuration(shortAnimTime).alpha(
                     show ? 0 : 1).setListener(new AnimatorListenerAdapter() {
                 @Override
                 public void onAnimationEnd(Animator animation) {
-                    mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
+                    mRegisterFormView.setVisibility(show ? View.GONE : View.VISIBLE);
                 }
             });
 
@@ -205,7 +209,7 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor>{
             // The ViewPropertyAnimator APIs are not available, so simply show
             // and hide the relevant UI components.
             mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
-            mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
+            mRegisterFormView.setVisibility(show ? View.GONE : View.VISIBLE);
         }
     }
 
@@ -219,7 +223,7 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor>{
                 // Select only email addresses.
                 ContactsContract.Contacts.Data.MIMETYPE +
                         " = ?", new String[]{ContactsContract.CommonDataKinds.Email
-                                                                     .CONTENT_ITEM_TYPE},
+                .CONTENT_ITEM_TYPE},
 
                 // Show primary email addresses first. Note that there won't be
                 // a primary email address if the user hasn't specified one.
@@ -257,48 +261,58 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor>{
     private void addEmailsToAutoComplete(List<String> emailAddressCollection) {
         //Create adapter to tell the AutoCompleteTextView what to show in its dropdown list.
         ArrayAdapter<String> adapter =
-                new ArrayAdapter<String>(LoginActivity.this,
+                new ArrayAdapter<String>(RegisterActivity.this,
                         android.R.layout.simple_dropdown_item_1line, emailAddressCollection);
 
-        mEmailView.setAdapter(adapter);
+        regEmail.setAdapter(adapter);
+    }
+
+    private void startPostingListActivityFinishRegister() {
+        Intent intent = new Intent(getApplicationContext(), PostingListActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        finish();
+        startActivity(intent);
     }
 
     /**
-     * Represents an asynchronous login/registration task used to authenticate
-     * the user.
+     * Represents an asynchronous registration task
      */
-    public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
+    public class UserRegisterTask extends AsyncTask<Void, Void, Boolean> {
+        private final String mFirstName;
+        private final String mLastName;
         private final String mEmail;
         private final String mPassword;
 
-        UserLoginTask(String email, String password) {
+        UserRegisterTask(String firstName, String lastName, String email, String password) {
+            mFirstName = firstName;
+            mLastName = lastName;
             mEmail = email;
             mPassword = password;
         }
 
         @Override
         protected Boolean doInBackground(Void... params) {
-            // TODO verify email/password using API VerifyLogin or add new user using API AddNewUser if user with that email doesn't exist
+            // TODO register new user via API
 
             return true;
         }
 
         @Override
         protected void onPostExecute(final Boolean success) {
-            mAuthTask = null;
+            mRegisterTask = null;
             showProgress(false);
             if (success) {
                 userMgmt.addUserEmail(mEmail);
-                startPostingListActivityFinishLogin();
+                startPostingListActivityFinishRegister();
             } else {
-                mPasswordView.setError(getString(R.string.error_incorrect_password));
-                mPasswordView.requestFocus();
+                regEmail.setError(getString(R.string.error_incorrect_password));
+                regEmail.requestFocus();
             }
         }
 
         @Override
         protected void onCancelled() {
-            mAuthTask = null;
+            mRegisterTask = null;
             showProgress(false);
         }
     }

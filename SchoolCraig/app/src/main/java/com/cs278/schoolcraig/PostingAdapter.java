@@ -42,7 +42,7 @@ public class PostingAdapter extends BaseAdapter implements Filterable {
         loadDataFromBackendUsingAPI(true);
 	}
 
-    // TODO potentially pull these categories from API
+    // TODO pull these categories from API
 	public void initializePossibleCategories() {
 		// Possible categories for events
 		categories.add("Textbooks");

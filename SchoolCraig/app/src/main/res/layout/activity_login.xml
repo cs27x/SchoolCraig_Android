@@ -55,13 +55,24 @@
                 <Button
                     android:id="@+id/email_sign_in_button"
                     style="?android:textAppearanceSmall"
-                    android:layout_width="match_parent"
+                    android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
                     android:text="@string/action_sign_in"
+                    android:onClick="onClickLoginAttempt"
+                    android:textStyle="bold"/>
+
+                <Button
+                    android:id="@+id/register_button"
+                    style="?android:textAppearanceSmall"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/action_register"
+                    android:onClick="onClickRegisterUserButton"
                     android:textStyle="bold"/>
 
             </LinearLayout>
+
     </ScrollView>
 
 </LinearLayout>

@@ -1,4 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <string name="app_name">SchoolCraig</string>
     <string name="title_posting_detail">Posting Information</string>
     <string name="title_posting_list">Postings</string>
@@ -27,11 +29,18 @@
     <!-- Strings related to login -->
     <string name="prompt_email">Email</string>
     <string name="prompt_password">Password</string>
-    <string name="action_sign_in">Sign in or register</string>
+    <string name="action_sign_in">Sign in</string>
+    <string name="action_register">Register</string>
     <string name="action_sign_in_short">Sign in</string>
-
+    <string name="first_name_register">First Name</string>
+    <string name="last_name_register">Last Name</string>
+    <string name="email_register">Email Address</string>
+    <string name="password_register">Password</string>
+    <string name="verify_password_register">Verify Password</string>
     <string name="error_invalid_email">This email address is invalid</string>
     <string name="error_invalid_password">This password is too short</string>
+    <string name="error_mismatch_passwords">Passwords do not match</string>
+    <string name="error_existing_email">This email is already registered with a user</string>
     <string name="error_incorrect_password">This password is incorrect</string>
     <string name="error_not_vandy_email">This is not a valid Vanderbilt.edu email</string>
 
@@ -41,4 +50,9 @@
         <item>Price Range</item>
         <item>By Date</item>
     </string-array>
+
+    <string name="title_activity_register">Register</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+
 </resources>

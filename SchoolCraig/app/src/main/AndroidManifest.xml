@@ -18,18 +18,18 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.cs278.schoolcraig.PostingListActivity"
+            android:name=".PostingListActivity"
             android:label="@string/title_posting_list" >
         </activity>
         <activity
-            android:name="com.cs278.schoolcraig.PostingDetailActivity"
+            android:name=".PostingDetailActivity"
             android:label="@string/title_posting_detail" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.cs278.schoolcraig.PostingListActivity" />
         </activity>
         <activity
-            android:name="com.cs278.schoolcraig.AddPostingActivity"
+            android:name=".AddPostingActivity"
             android:label="@string/title_activity_add_posting" >
         </activity>
         <activity
@@ -40,8 +40,16 @@
                 android:value="PostingListActivity" />
         </activity>
         <activity
-            android:name="com.cs278.schoolcraig.FilterPostingListActivity"
+            android:name=".FilterPostingListActivity"
             android:label="@string/filter_posting_activity_title" >
+        </activity>
+        <activity
+            android:name=".RegisterActivity"
+            android:label="@string/title_activity_register"
+            android:parentActivityName=".LoginActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.cs278.schoolcraig.LoginActivity" />
         </activity>
     </application>
 
