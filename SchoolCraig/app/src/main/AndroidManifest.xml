@@ -32,13 +32,13 @@
             android:name=".AddPostingActivity"
             android:label="@string/title_activity_add_posting" >
         </activity>
-        <activity
-            android:name=".PostingFilterActivity"
-            android:label="@string/filter_posting_activity_title" >
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="PostingListActivity" />
-        </activity>
+        <!--<activity-->
+            <!--android:name=".PostingFilterActivity"-->
+            <!--android:label="@string/filter_posting_activity_title" >-->
+            <!--<meta-data-->
+                <!--android:name="android.support.PARENT_ACTIVITY"-->
+                <!--android:value="PostingListActivity" />-->
+        <!--</activity>-->
         <activity
             android:name=".FilterPostingListActivity"
             android:label="@string/filter_posting_activity_title" >

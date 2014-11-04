@@ -168,7 +168,7 @@ public class RegisterActivity extends Activity implements LoaderManager.LoaderCa
 //            mRegisterTask = new UserRegisterTask(firstName, lastName, email, password);
 //            mRegisterTask.execute((Void) null);
             mRegLoginTask = new UserRegisterLoginTask(RegisterActivity.this, firstName, lastName, email, password);
-            mRegLoginTask.execute((Void) null);
+            mRegLoginTask.execute(Utils.REGISTER);
         }
     }
 
