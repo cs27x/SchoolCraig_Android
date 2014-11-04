@@ -18,10 +18,18 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.HttpEntity;
 import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.util.EntityUtils;
+import org.apache.commons.io.IOUtils;
+
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 /**
  * Created by violettavylegzhanina on 10/30/14.
@@ -39,25 +47,41 @@ public class UserRegisterLoginTask extends AsyncTask<Integer, Void, Boolean> {
     private Activity mActivity;
     private ProgressDialog dialog;
 
-    private String mFirstName = null;
-    private String mLastName = null;
-    private String mEmail = null;
-    private String mPassword = null;
+//    private String mFirstName = null;
+//    private String mLastName = null;
+//    private String mEmail = null;
+//    private String mPassword = null;
 
-    UserRegisterLoginTask(Activity a, String firstName, String lastName, String email, String password) {
+    private HttpResponse response = null;
+    private DefaultHttpClient httpclient;
+    private HttpPost httpPost;
+    private User mUser;
+    private Gson gson;
+    private String json;
+
+//    UserRegisterLoginTask(Activity a, String firstName, String lastName, String email, String password) {
+//        mActivity = a;
+//        dialog = new ProgressDialog(a);
+//        mFirstName = firstName;
+//        mLastName = lastName;
+//        mEmail = email;
+//        mPassword = password;
+//    }
+//
+//    UserRegisterLoginTask(Activity a, String email, String password) {
+//        mActivity = a;
+//        dialog = new ProgressDialog(a);
+//        mEmail = email;
+//        mPassword = password;
+//    }
+
+    UserRegisterLoginTask(Activity a, User u){
+
         mActivity = a;
         dialog = new ProgressDialog(a);
-        mFirstName = firstName;
-        mLastName = lastName;
-        mEmail = email;
-        mPassword = password;
-    }
+        mUser = u;
 
-    UserRegisterLoginTask(Activity a, String email, String password) {
-        mActivity = a;
-        dialog = new ProgressDialog(a);
-        mEmail = email;
-        mPassword = password;
+        Log.d("Task", "constructor called");
     }
 
     @Override
@@ -70,19 +94,22 @@ public class UserRegisterLoginTask extends AsyncTask<Integer, Void, Boolean> {
         // TODO register new user via API
 
         Integer taskType = params[0];
-        HttpResponse response = null;
 
         switch(taskType) {
 
             case(Utils.REGISTER):
 
-            DefaultHttpClient httpclient = new DefaultHttpClient();
-            HttpPost httpPost = new HttpPost(Utils.CREATE_USER);
+            httpclient = new DefaultHttpClient();
+            httpPost = new HttpPost(Utils.CREATE_USER);
 
-            ArrayList<NameValuePair> myList = Utils.makeRegisterList(mFirstName, mLastName, mEmail, mPassword);
+            //ArrayList<NameValuePair> myList = Utils.makeRegisterList(mFirstName, mLastName, mEmail, mPassword);
+            //User user = new User(mFirstName, mLastName, mEmail, mPassword);
+            gson = new Gson();
+            json = gson.toJson(mUser);
+                Log.d("JSON", json);
 
             try {
-                httpPost.setEntity(new UrlEncodedFormEntity(myList));
+                httpPost.setEntity(new StringEntity(json, "UTF8"));
                 Log.d("Register", "set entity");
             } catch (UnsupportedEncodingException e) {
                 // TODO Auto-generated catch block
@@ -92,6 +119,15 @@ public class UserRegisterLoginTask extends AsyncTask<Integer, Void, Boolean> {
             try {
                 response = httpclient.execute(httpPost);
                 Log.d("Register", "executed response");
+
+                Log.d("Response", response.getStatusLine().getStatusCode()+"");
+                HttpEntity entity = response.getEntity();
+//                String content = EntityUtils.toString(entity);
+//                Log.d("Response", content);
+                InputStream is = response.getEntity().getContent();
+                String body = IOUtils.toString(is, "UTF8");
+                Log.d("Response", body);
+
             } catch (ClientProtocolException e) {
                 Log.e("Clientprotocolexception", e.toString());
                 e.printStackTrace();
@@ -99,11 +135,50 @@ public class UserRegisterLoginTask extends AsyncTask<Integer, Void, Boolean> {
                 Log.e("IOException", e.toString());
                 e.printStackTrace();
             }
+                break;
 
             case Utils.LOGIN:
+
+                httpclient = new DefaultHttpClient();
+                httpPost = new HttpPost(Utils.AUTH_USER);
+
+                //ArrayList<NameValuePair> myList = Utils.makeRegisterList(mFirstName, mLastName, mEmail, mPassword);
+                //user = new User(mEmail, mPassword);
+                gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
+                json = gson.toJson(mUser);
+                Log.d("JSON", json);
+
+                try {
+                    httpPost.setEntity(new StringEntity(json, "UTF8"));
+                    Log.d("Login", "set entity");
+                } catch (UnsupportedEncodingException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+
+                try {
+                    response = httpclient.execute(httpPost);
+                    Log.d("Login", "executed response");
+
+                    Log.d("Login", response.getStatusLine().getStatusCode()+"");
+                    HttpEntity entity = response.getEntity();
+                    InputStream is = response.getEntity().getContent();
+                    String body = IOUtils.toString(is, "UTF8");
+                    Log.d("Response", body);
+
+                } catch (ClientProtocolException e) {
+                    Log.e("Clientprotocolexception", e.toString());
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    Log.e("IOException", e.toString());
+                    e.printStackTrace();
+                }
+                break;
+
+            default:
+
         }
 
-        Log.d("Response", response.getStatusLine().getStatusCode()+"");
         return true;
     }
 
@@ -114,7 +189,7 @@ public class UserRegisterLoginTask extends AsyncTask<Integer, Void, Boolean> {
         dialog.dismiss();
         if (success) {
             userMgmt = UserManagement.getInstance(mActivity);
-            userMgmt.addUserEmail(mEmail);
+            userMgmt.addUserEmail(mUser.getEmail());
 
             startPostingListActivityFinishRegister();
         } else {

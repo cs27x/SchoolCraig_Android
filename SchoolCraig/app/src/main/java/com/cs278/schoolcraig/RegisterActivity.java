@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
 import android.net.Uri;
+import android.util.Log;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
@@ -167,7 +168,11 @@ public class RegisterActivity extends Activity implements LoaderManager.LoaderCa
 
 //            mRegisterTask = new UserRegisterTask(firstName, lastName, email, password);
 //            mRegisterTask.execute((Void) null);
-            mRegLoginTask = new UserRegisterLoginTask(RegisterActivity.this, firstName, lastName, email, password);
+            User user = new User(firstName, lastName, email, password);
+            Log.d("RegisterActivity", "about to construct task");
+            mRegLoginTask = new UserRegisterLoginTask(RegisterActivity.this, user);
+            //mRegLoginTask = new UserRegisterLoginTask(RegisterActivity.this, firstName, lastName, email, password);
+            Log.d("RegisterActivity", "constructed task");
             mRegLoginTask.execute(Utils.REGISTER);
         }
     }

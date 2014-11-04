@@ -13,15 +13,7 @@ public class Utils {
     public static final int REGISTER = 1;
     public static final int LOGIN = 2;
     public final static String CREATE_USER = "https://school-craig.herokuapp.com/user";
+    public final static String AUTH_USER = "https://school-craig.herokuapp.com/user/auth";
 
-    public static ArrayList<NameValuePair> makeRegisterList(String fname, String lname, String email, String password) {
 
-        ArrayList<NameValuePair> params = new ArrayList<NameValuePair>();
-        params.add(new BasicNameValuePair("fname", fname));
-        params.add(new BasicNameValuePair("lname", lname));
-        params.add(new BasicNameValuePair("email", email));
-        params.add(new BasicNameValuePair("password", password));
-
-        return params;
-    }
 }
