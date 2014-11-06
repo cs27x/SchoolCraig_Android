@@ -28,7 +28,7 @@
 	
 	    <fragment
 	        android:id="@+id/posting_list"
-	        android:name="com.cs278.schoolcraig.PostingListFragment"
+	        android:name="com.cs278.schoolcraig.ui.PostingListFragment"
 	        android:layout_width="0dp"
 	        android:layout_height="match_parent"
 	        android:layout_weight="1"

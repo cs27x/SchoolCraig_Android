@@ -1,4 +1,4 @@
-package com.cs278.schoolcraig;
+package com.cs278.schoolcraig.ui;
 
 import android.app.Activity;
 import android.app.ListFragment;
@@ -6,11 +6,14 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ListView;
 
+import com.cs278.schoolcraig.ui.PostingAdapter;
+import com.cs278.schoolcraig.ui.PostingListActivity;
+
 /**
  * A list fragment representing a list of Events. This fragment
  * also supports tablet devices by allowing list items to be given an
  * 'activated' state upon selection. This helps indicate which item is
- * currently being viewed in a {@link PostingDetailFragment}.
+ * currently being viewed in a {@link com.cs278.schoolcraig.ui.PostingDetailFragment}.
  * <p>
  * Activities containing this fragment MUST implement the {@link Callbacks}
  * interface.

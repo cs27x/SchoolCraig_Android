@@ -1,4 +1,4 @@
-package com.cs278.schoolcraig;
+package com.cs278.schoolcraig.ui;
 
 import android.content.Context;
 import android.util.Log;
@@ -9,6 +9,9 @@ import android.widget.BaseAdapter;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.TextView;
+
+import com.cs278.schoolcraig.R;
+import com.cs278.schoolcraig.data.Posting;
 
 import java.util.ArrayList;
 import java.util.Calendar;

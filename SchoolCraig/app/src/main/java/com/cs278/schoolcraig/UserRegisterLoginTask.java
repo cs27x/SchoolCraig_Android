@@ -1,33 +1,26 @@
 package com.cs278.schoolcraig;
 
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
-import android.annotation.TargetApi;
 import android.content.Intent;
 import android.os.AsyncTask;
-import android.content.Context;
 import android.app.Activity;
 import android.app.ProgressDialog;
-import android.os.Build;
 import android.util.Log;
-import android.view.View;
+
 import org.apache.http.HttpResponse;
-import org.apache.http.NameValuePair;
 import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.HttpEntity;
-import org.apache.http.message.BasicNameValuePair;
-import org.apache.http.util.EntityUtils;
 import org.apache.commons.io.IOUtils;
 
 import java.io.InputStream;
-import java.util.ArrayList;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+
+import com.cs278.schoolcraig.data.User;
+import com.cs278.schoolcraig.ui.PostingListActivity;
+import com.cs278.schoolcraig.utils.Utils;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -99,42 +92,56 @@ public class UserRegisterLoginTask extends AsyncTask<Integer, Void, Boolean> {
 
             case(Utils.REGISTER):
 
-            httpclient = new DefaultHttpClient();
-            httpPost = new HttpPost(Utils.CREATE_USER);
+//                RestClient.get().createUser(mUser, new TaskCallback<UserResponse>() {
+//                    @Override
+//                    public void success(UserResponse result) {
+//                        Log.d("SUCCESS", result.getFname());
+//                    }
+//
+//                    @Override
+//                    public void error(Exception e) {
+//                        Log.d("ERROR", e.getMessage().toString());
+//                    }
+//                });
 
-            //ArrayList<NameValuePair> myList = Utils.makeRegisterList(mFirstName, mLastName, mEmail, mPassword);
-            //User user = new User(mFirstName, mLastName, mEmail, mPassword);
-            gson = new Gson();
-            json = gson.toJson(mUser);
-                Log.d("JSON", json);
 
-            try {
-                httpPost.setEntity(new StringEntity(json, "UTF8"));
-                Log.d("Register", "set entity");
-            } catch (UnsupportedEncodingException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
 
-            try {
-                response = httpclient.execute(httpPost);
-                Log.d("Register", "executed response");
-
-                Log.d("Response", response.getStatusLine().getStatusCode()+"");
-                HttpEntity entity = response.getEntity();
-//                String content = EntityUtils.toString(entity);
-//                Log.d("Response", content);
-                InputStream is = response.getEntity().getContent();
-                String body = IOUtils.toString(is, "UTF8");
-                Log.d("Response", body);
-
-            } catch (ClientProtocolException e) {
-                Log.e("Clientprotocolexception", e.toString());
-                e.printStackTrace();
-            } catch (IOException e) {
-                Log.e("IOException", e.toString());
-                e.printStackTrace();
-            }
+//            httpclient = new DefaultHttpClient();
+//            httpPost = new HttpPost(Utils.CREATE_USER);
+//
+//            //ArrayList<NameValuePair> myList = Utils.makeRegisterList(mFirstName, mLastName, mEmail, mPassword);
+//            //User user = new User(mFirstName, mLastName, mEmail, mPassword);
+//            gson = new Gson();
+//            json = gson.toJson(mUser);
+//                Log.d("JSON", json);
+//
+//            try {
+//                httpPost.setEntity(new StringEntity(json, "UTF8"));
+//                Log.d("Register", "set entity");
+//            } catch (UnsupportedEncodingException e) {
+//                // TODO Auto-generated catch block
+//                e.printStackTrace();
+//            }
+//
+//            try {
+//                response = httpclient.execute(httpPost);
+//                Log.d("Register", "executed response");
+//
+//                Log.d("Response", response.getStatusLine().getStatusCode()+"");
+//                HttpEntity entity = response.getEntity();
+////                String content = EntityUtils.toString(entity);
+////                Log.d("Response", content);
+//                InputStream is = response.getEntity().getContent();
+//                String body = IOUtils.toString(is, "UTF8");
+//                Log.d("Response", body);
+//
+//            } catch (ClientProtocolException e) {
+//                Log.e("Clientprotocolexception", e.toString());
+//                e.printStackTrace();
+//            } catch (IOException e) {
+//                Log.e("IOException", e.toString());
+//                e.printStackTrace();
+//            }
                 break;
 
             case Utils.LOGIN:

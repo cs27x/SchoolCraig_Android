@@ -1,4 +1,4 @@
-package com.cs278.schoolcraig;
+package com.cs278.schoolcraig.ui;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -8,6 +8,9 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+
+import com.cs278.schoolcraig.R;
+import com.cs278.schoolcraig.UserManagement;
 
 /**
  * An activity representing a list of Events. This activity
@@ -19,7 +22,7 @@ import android.widget.Button;
  * <p>
  * The activity makes heavy use of fragments. The list of items is a
  * {@link PostingListFragment} and the item details
- * (if present) is a {@link PostingDetailFragment}.
+ * (if present) is a {@link com.cs278.schoolcraig.ui.PostingDetailFragment}.
  * <p>
  * This activity also implements the required
  * {@link PostingListFragment.Callbacks} interface

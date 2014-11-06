@@ -1,4 +1,4 @@
-package com.cs278.schoolcraig;
+package com.cs278.schoolcraig.utils;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;

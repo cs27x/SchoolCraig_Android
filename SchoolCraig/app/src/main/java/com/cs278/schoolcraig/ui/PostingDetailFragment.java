@@ -1,4 +1,4 @@
-package com.cs278.schoolcraig;
+package com.cs278.schoolcraig.ui;
 
 import android.app.Fragment;
 import android.os.Bundle;
@@ -6,6 +6,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
+import com.cs278.schoolcraig.R;
+import com.cs278.schoolcraig.data.Posting;
 
 /**
  * A fragment representing a single Event detail screen.

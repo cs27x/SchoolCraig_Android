@@ -3,12 +3,12 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:orientation="vertical"
-   	tools:context="com.cs278.schoolcraig.PostingListActivity"
+   	tools:context="com.cs278.schoolcraig.ui.PostingListActivity"
 	tools:layout="@android:layout/list_posting_layout" >
 
 	<fragment
 	    android:id="@+id/posting_list"
-	    android:name="com.cs278.schoolcraig.PostingListFragment"
+	    android:name="com.cs278.schoolcraig.ui.PostingListFragment"
 	    android:layout_width="match_parent"
 	    android:layout_height="0dip"
 	    android:layout_weight="1"

@@ -1,4 +1,4 @@
-package com.cs278.schoolcraig;
+package com.cs278.schoolcraig.ui;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
@@ -10,11 +10,11 @@ import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
@@ -23,8 +23,19 @@ import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.cs278.schoolcraig.api.CallableTask;
+import com.cs278.schoolcraig.R;
+import com.cs278.schoolcraig.api.RestClient;
+import com.cs278.schoolcraig.api.SchoolCraigAPI;
+import com.cs278.schoolcraig.api.TaskCallback;
+import com.cs278.schoolcraig.UserManagement;
+import com.cs278.schoolcraig.UserRegisterLoginTask;
+import com.cs278.schoolcraig.data.Auth;
+import com.cs278.schoolcraig.data.User;
+
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Callable;
 
 
 /**
@@ -165,8 +176,31 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor>{
 //            mAuthTask = new UserLoginTask(email, password);
 //            mAuthTask.execute((Void) null);
             User user = new User(email, password);
-            mRegLoginTask = new UserRegisterLoginTask(LoginActivity.this, user);
-            mRegLoginTask.execute(Utils.LOGIN);
+//            mRegLoginTask = new UserRegisterLoginTask(LoginActivity.this, user);
+//            mRegLoginTask.execute(Utils.LOGIN);
+
+            final Auth auth = new Auth(email, password);
+            final SchoolCraigAPI api = RestClient.get();
+
+            CallableTask.invoke(new Callable<User>() {
+                                    @Override
+                                    public User call() throws Exception {
+                                        return api.authUser(auth);
+                                        //return null;
+                                    }
+                                }, new TaskCallback<User>() {
+                                    @Override
+                                    public void success(User result) {
+                                        Log.d("SUCCESS", "user authenticated");
+                                        showProgress(false);
+                                    }
+
+                                    @Override
+                                    public void error(Exception e) {
+                                        Log.d("ERROR", e.getMessage().toString());
+                                    }
+                                }
+            );
         }
     }
 
@@ -271,44 +305,4 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor>{
 
         mEmailView.setAdapter(adapter);
     }
-
-    /**
-     * Represents an asynchronous login/registration task used to authenticate
-     * the user.
-     */
-//    public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
-//        private final String mEmail;
-//        private final String mPassword;
-//
-//        UserLoginTask(String email, String password) {
-//            mEmail = email;
-//            mPassword = password;
-//        }
-//
-//        @Override
-//        protected Boolean doInBackground(Void... params) {
-//            // TODO verify email/password using API VerifyLogin or add new user using API AddNewUser if user with that email doesn't exist
-//
-//            return true;
-//        }
-//
-//        @Override
-//        protected void onPostExecute(final Boolean success) {
-//            mAuthTask = null;
-//            showProgress(false);
-//            if (success) {
-//                userMgmt.addUserEmail(mEmail);
-//                startPostingListActivityFinishLogin();
-//            } else {
-//                mPasswordView.setError(getString(R.string.error_incorrect_password));
-//                mPasswordView.requestFocus();
-//            }
-//        }
-//
-//        @Override
-//        protected void onCancelled() {
-//            mAuthTask = null;
-//            showProgress(false);
-//        }
-//    }
 }

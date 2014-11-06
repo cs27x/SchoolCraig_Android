@@ -1,4 +1,4 @@
-package com.cs278.schoolcraig;
+package com.cs278.schoolcraig.ui;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -6,15 +6,19 @@ import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.view.MenuItem;
 
+import com.cs278.schoolcraig.ui.PostingDetailFragment;
+import com.cs278.schoolcraig.ui.PostingListActivity;
+import com.cs278.schoolcraig.R;
+
 
 /**
  * An activity representing a single Event detail screen. This
  * activity is only used on handset devices. On tablet-size devices,
  * item details are presented side-by-side with a list of items
- * in a {@link PostingListActivity}.
+ * in a {@link com.cs278.schoolcraig.ui.PostingListActivity}.
  * <p>
  * This activity is mostly just a 'shell' activity containing nothing
- * more than a {@link PostingDetailFragment}.
+ * more than a {@link com.cs278.schoolcraig.ui.PostingDetailFragment}.
  */
 public class PostingDetailActivity extends Activity {
     @Override

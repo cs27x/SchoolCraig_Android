@@ -1,4 +1,4 @@
-package com.cs278.schoolcraig;
+package com.cs278.schoolcraig.ui;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -7,6 +7,10 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
+
+import com.cs278.schoolcraig.R;
+import com.cs278.schoolcraig.UserManagement;
+import com.cs278.schoolcraig.data.Posting;
 
 import java.util.Calendar;
 

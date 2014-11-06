@@ -1,4 +1,4 @@
-package com.cs278.schoolcraig;
+package com.cs278.schoolcraig.ui;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
@@ -11,7 +11,6 @@ import android.content.Loader;
 import android.database.Cursor;
 import android.net.Uri;
 import android.util.Log;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
@@ -21,8 +20,18 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 
+import com.cs278.schoolcraig.api.CallableTask;
+import com.cs278.schoolcraig.R;
+import com.cs278.schoolcraig.api.RestClient;
+import com.cs278.schoolcraig.api.SchoolCraigAPI;
+import com.cs278.schoolcraig.api.TaskCallback;
+import com.cs278.schoolcraig.UserManagement;
+import com.cs278.schoolcraig.UserRegisterLoginTask;
+import com.cs278.schoolcraig.data.User;
+
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Callable;
 
 
 public class RegisterActivity extends Activity implements LoaderManager.LoaderCallbacks<Cursor> {
@@ -168,12 +177,32 @@ public class RegisterActivity extends Activity implements LoaderManager.LoaderCa
 
 //            mRegisterTask = new UserRegisterTask(firstName, lastName, email, password);
 //            mRegisterTask.execute((Void) null);
-            User user = new User(firstName, lastName, email, password);
-            Log.d("RegisterActivity", "about to construct task");
-            mRegLoginTask = new UserRegisterLoginTask(RegisterActivity.this, user);
-            //mRegLoginTask = new UserRegisterLoginTask(RegisterActivity.this, firstName, lastName, email, password);
-            Log.d("RegisterActivity", "constructed task");
-            mRegLoginTask.execute(Utils.REGISTER);
+            final User user = new User(firstName, lastName, email, password);
+            final SchoolCraigAPI api = RestClient.get();
+
+            CallableTask.invoke(new Callable<Void>() {
+                                    @Override
+                                    public Void call() throws Exception {
+                                        api.createUser(user);
+                                        return null;
+                                    }
+                                }, new TaskCallback<Void>() {
+                                    @Override
+                                    public void success(Void result) {
+                                        Log.d("SUCCESS", "user stored");
+                                        showProgress(false);
+                                    }
+
+                                    @Override
+                                    public void error(Exception e) {
+                                        Log.d("ERROR", e.getMessage().toString());
+                                    }
+                                }
+            );
+
+//            mRegLoginTask = new UserRegisterLoginTask(RegisterActivity.this, user);
+//            ////mRegLoginTask = new UserRegisterLoginTask(RegisterActivity.this, firstName, lastName, email, password);
+//            mRegLoginTask.execute(Utils.REGISTER);
         }
     }
 
@@ -285,47 +314,4 @@ public class RegisterActivity extends Activity implements LoaderManager.LoaderCa
         finish();
         startActivity(intent);
     }
-
-    /**
-     * Represents an asynchronous registration task
-     */
-//    public class UserRegisterTask extends AsyncTask<Void, Void, Boolean> {
-//        private final String mFirstName;
-//        private final String mLastName;
-//        private final String mEmail;
-//        private final String mPassword;
-//
-//        UserRegisterTask(String firstName, String lastName, String email, String password) {
-//            mFirstName = firstName;
-//            mLastName = lastName;
-//            mEmail = email;
-//            mPassword = password;
-//        }
-//
-//        @Override
-//        protected Boolean doInBackground(Void... params) {
-//            // TODO register new user via API
-//
-//            return true;
-//        }
-//
-//        @Override
-//        protected void onPostExecute(final Boolean success) {
-//            mRegisterTask = null;
-//            showProgress(false);
-//            if (success) {
-//                userMgmt.addUserEmail(mEmail);
-//                startPostingListActivityFinishRegister();
-//            } else {
-//                regEmail.setError(getString(R.string.error_incorrect_password));
-//                regEmail.requestFocus();
-//            }
-//        }
-//
-//        @Override
-//        protected void onCancelled() {
-//            mRegisterTask = null;
-//            showProgress(false);
-//        }
-//    }
 }

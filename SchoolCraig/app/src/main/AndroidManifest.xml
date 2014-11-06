@@ -8,7 +8,7 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name=".LoginActivity"
+            android:name=".ui.LoginActivity"
             android:label="@string/app_name"
             android:windowSoftInputMode="adjustResize|stateVisible" >
             <intent-filter>
@@ -18,18 +18,18 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".PostingListActivity"
+            android:name=".ui.PostingListActivity"
             android:label="@string/title_posting_list" >
         </activity>
         <activity
-            android:name=".PostingDetailActivity"
+            android:name=".ui.PostingDetailActivity"
             android:label="@string/title_posting_detail" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.cs278.schoolcraig.PostingListActivity" />
         </activity>
         <activity
-            android:name=".AddPostingActivity"
+            android:name=".ui.AddPostingActivity"
             android:label="@string/title_activity_add_posting" >
         </activity>
         <!--<activity-->
@@ -40,13 +40,13 @@
                 <!--android:value="PostingListActivity" />-->
         <!--</activity>-->
         <activity
-            android:name=".FilterPostingListActivity"
+            android:name=".ui.FilterPostingListActivity"
             android:label="@string/filter_posting_activity_title" >
         </activity>
         <activity
-            android:name=".RegisterActivity"
+            android:name=".ui.RegisterActivity"
             android:label="@string/title_activity_register"
-            android:parentActivityName=".LoginActivity" >
+            android:parentActivityName=".ui.LoginActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.cs278.schoolcraig.LoginActivity" />

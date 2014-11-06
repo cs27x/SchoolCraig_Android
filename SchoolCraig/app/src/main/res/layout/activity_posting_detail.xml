@@ -3,6 +3,6 @@
     android:id="@+id/posting_detail_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.cs278.schoolcraig.PostingDetailActivity"
+    tools:context="com.cs278.schoolcraig.ui.PostingDetailActivity"
     tools:ignore="MergeRootFrame" />
 
