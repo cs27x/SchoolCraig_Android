@@ -24,4 +24,16 @@ public class Post {
         this.category = category;
         this.date = date;
     }
+
+    public String getId() { return id; }
+    public void setId(String id) { this.id = id; }
+    public double getCost() { return cost; }
+    public void setCost(double cost) { this.cost = cost; };
+    public String getUser_id() { return user_id; }
+    public String getDescription() { return description; }
+    public void setDescription(String description) { this.description = description; }
+    public String getCategory() { return category; }
+    public void setCategory(String category) { this.category = category; }
+    public String getDate() { return date; }
+    public  void setDate(String date) { this.date = date; }
 }

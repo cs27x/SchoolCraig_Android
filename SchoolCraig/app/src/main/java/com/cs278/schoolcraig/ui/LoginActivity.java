@@ -186,22 +186,34 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor>{
                                     @Override
                                     public User call() throws Exception {
                                         return api.authUser(auth);
-                                        //return null;
                                     }
                                 }, new TaskCallback<User>() {
                                     @Override
-                                    public void success(User result) {
+                                    public void success(User user) {
                                         Log.d("SUCCESS", "user authenticated");
                                         showProgress(false);
+
+                                        userMgmt = UserManagement.getInstance(LoginActivity.this);
+                                        userMgmt.addUserEmail(user.getEmail());
+
+                                        startPostingListActivity();
                                     }
 
                                     @Override
                                     public void error(Exception e) {
                                         Log.d("ERROR", e.getMessage().toString());
+                                        showProgress(false);
                                     }
                                 }
             );
         }
+    }
+
+    private void startPostingListActivity() {
+        Intent intent = new Intent(LoginActivity.this, PostingListActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        this.finish();
+        this.startActivity(intent);
     }
 
     private boolean isEmailValid(String email) {

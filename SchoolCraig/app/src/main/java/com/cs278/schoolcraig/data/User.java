@@ -40,15 +40,15 @@ public class User {
     }
 
     public String getId() { return id; }
-    public void setId() { this.id = id; }
+    public void setId(String id) { this.id = id; }
     public String getFname() { return fname; }
-    public void setFname() { this.fname = fname; }
+    public void setFname(String fname) { this.fname = fname; }
     public String getLname() { return lname; }
-    public void setLname() { this.lname = lname; }
+    public void setLname(String lname) { this.lname = lname; }
     public String getEmail() { return email; }
-    public void setEmail() { this.email = email; }
+    public void setEmail(String email) { this.email = email; }
     public String getPassword() { return password; }
-    public void setPassword() { this.password = password; }
+    public void setPassword(String password) { this.password = password; }
 
 }
 

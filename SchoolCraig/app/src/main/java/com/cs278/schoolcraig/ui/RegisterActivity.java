@@ -35,14 +35,14 @@ import java.util.concurrent.Callable;
 
 
 public class RegisterActivity extends Activity implements LoaderManager.LoaderCallbacks<Cursor> {
-//    private UserRegisterTask mRegisterTask = null;
+    //    private UserRegisterTask mRegisterTask = null;
     private UserRegisterLoginTask mRegLoginTask = null;
     private UserManagement userMgmt = null;
     private View mProgressView = null;
     private View mRegisterFormView = null;
 
     private EditText regFirstName = null;
-    private EditText regLastName =  null;
+    private EditText regLastName = null;
     private AutoCompleteTextView regEmail;
     private EditText regPword = null;
     private EditText regPwordVerify = null;
@@ -67,9 +67,9 @@ public class RegisterActivity extends Activity implements LoaderManager.LoaderCa
     }
 
     private void getAnyInfoFromIntent(Intent intent) {
-        if(intent.hasExtra("email"))
+        if (intent.hasExtra("email"))
             regEmail.setText(intent.getStringExtra("email"));
-        if(intent.hasExtra("pword")) {
+        if (intent.hasExtra("pword")) {
             String pword = intent.getStringExtra("pword");
             regPword.setText(pword);
             regPwordVerify.setText(pword);
@@ -94,7 +94,7 @@ public class RegisterActivity extends Activity implements LoaderManager.LoaderCa
 //            return;
 //        }
 
-        if(mRegLoginTask != null){
+        if (mRegLoginTask != null) {
             return;
         }
 
@@ -115,7 +115,7 @@ public class RegisterActivity extends Activity implements LoaderManager.LoaderCa
         boolean cancel = false;
         View focusView = null;
 
-        if(TextUtils.isEmpty(password)) {
+        if (TextUtils.isEmpty(password)) {
             regPword.setError(getString(R.string.error_field_required));
             focusView = regPword;
             cancel = true;
@@ -125,7 +125,7 @@ public class RegisterActivity extends Activity implements LoaderManager.LoaderCa
             cancel = true;
         }
 
-        if(TextUtils.isEmpty(password)) {
+        if (TextUtils.isEmpty(password)) {
             regPwordVerify.setError(getString(R.string.error_field_required));
             focusView = regPwordVerify;
             cancel = true;
@@ -191,11 +191,14 @@ public class RegisterActivity extends Activity implements LoaderManager.LoaderCa
                                     public void success(Void result) {
                                         Log.d("SUCCESS", "user stored");
                                         showProgress(false);
+
+                                        backToLoginActivity();
                                     }
 
                                     @Override
                                     public void error(Exception e) {
                                         Log.d("ERROR", e.getMessage().toString());
+                                        showProgress(false);
                                     }
                                 }
             );
@@ -204,6 +207,13 @@ public class RegisterActivity extends Activity implements LoaderManager.LoaderCa
 //            ////mRegLoginTask = new UserRegisterLoginTask(RegisterActivity.this, firstName, lastName, email, password);
 //            mRegLoginTask.execute(Utils.REGISTER);
         }
+    }
+
+    private void backToLoginActivity() {
+        Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        this.finish();
+        this.startActivity(intent);
     }
 
     private boolean isEmailValid(String email) {
