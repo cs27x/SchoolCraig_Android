@@ -16,6 +16,15 @@ public class Post {
 
     }
 
+    public Post(Posting p) {
+        this.id = String.valueOf(p.getId());
+        this.cost = p.getPrice();
+        this.user_id = p.getUser_id();
+        this.description = p.getDescription();
+        this.category = p.getCategory();
+        this.date = p.getCreationDateString();
+    }
+
     public Post(String id, double cost, String user_id, String description, String category, String date){
         this.id = id;
         this.cost = cost;

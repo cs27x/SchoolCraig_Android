@@ -2,6 +2,9 @@ package com.cs278.schoolcraig.data;
 
 import android.util.Log;
 
+import com.cs278.schoolcraig.api.RestClient;
+import com.cs278.schoolcraig.api.SchoolCraigAPI;
+
 import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -15,6 +18,7 @@ public class Posting {
     public static SimpleDateFormat sdf = new SimpleDateFormat("M/d/yyyy h:mm aaa", Locale.US);
     public static DecimalFormat df = new DecimalFormat("#0.00");
     private int id;
+    private String user_id;
     private String title;
     private String description;
     private double price;
@@ -25,7 +29,11 @@ public class Posting {
     // Date String must be in format "M/d/yyyy h:mm AM or PM"
     // "month/day/4-digit-year hour:minute AM-or-PM"
     // TODO add image next iteration
-    public Posting(int id, String title, String description, double price, String poster, String category, String creationDate) {
+    public Posting(Post p){
+        this(Integer.valueOf(p.getId()), p.getUser_id(), "Add Title to getPosts?", p.getDescription(), p.getCost(), p.getUser_id(), p.getCategory(), p.getDate());
+    }
+
+    public Posting(int id, String user_id, String title, String description, double price, String poster, String category, String creationDate) {
     	log_class = this.getClass().getSimpleName();
         this.id = id;
         this.title = title;
@@ -38,9 +46,11 @@ public class Posting {
     }
 
     public Posting(String title, String description, double price, String poster, String category, String creationDate) {
-        this(0, title, description, price, poster, category, creationDate);
+        this(0, "anonymous", title, description, price, poster, category, creationDate);
     }
 
+    public String getUser_id() { return this.user_id; }
+    public void setUser_id(String user_id) { this.user_id = user_id; }
     public int getId() { return this.id; }
     public String getTitle() { return this.title; }
     public void setTitle(String title) { this.title = title; }
@@ -74,15 +84,17 @@ public class Posting {
     }
 
     public void addPostingViaAPI() {
-        // TODO Add posting to backend via API, Get id back and set id of posting
-        // this.id = api.addPost(...);
+        final SchoolCraigAPI api = RestClient.get();
+        api.createPost(new Post(this));
     }
 
     public void editPostingViaAPI() {
-        // TODO Edit posting in backend via APIs
+        final SchoolCraigAPI api = RestClient.get();
+        api.updatePost(String.valueOf(this.getId()));
     }
 
     public void deletePostingViaAPI() {
-        // TODO Delete posting in backend via APIs
+        final SchoolCraigAPI api = RestClient.get();
+        api.deletePost(String.valueOf(this.getId()));
     }
 }

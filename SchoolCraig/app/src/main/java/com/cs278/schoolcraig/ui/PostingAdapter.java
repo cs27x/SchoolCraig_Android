@@ -11,10 +11,15 @@ import android.widget.Filterable;
 import android.widget.TextView;
 
 import com.cs278.schoolcraig.R;
+import com.cs278.schoolcraig.api.RestClient;
+import com.cs278.schoolcraig.api.SchoolCraigAPI;
+import com.cs278.schoolcraig.data.Post;
+import com.cs278.schoolcraig.data.Category;
 import com.cs278.schoolcraig.data.Posting;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collection;
 
 public class PostingAdapter extends BaseAdapter implements Filterable {
 
@@ -45,33 +50,28 @@ public class PostingAdapter extends BaseAdapter implements Filterable {
         loadDataFromBackendUsingAPI(true);
 	}
 
-    // TODO pull these categories from API
 	public void initializePossibleCategories() {
-		// Possible categories for events
-		categories.add("Textbooks");
-		categories.add("Furniture");
-		categories.add("Musical Instruments");
-		categories.add("Tickets");
-		categories.add("Appliances");
-		categories.add("Vehicles");
-		categories.add("Free");
-		categories.add("General");
-        categories.add("Other");
-		categories.add("Wanted");
+
+        final SchoolCraigAPI api = RestClient.get();
+        Collection<Category> categories = api.getCategories();
+        for (Category c : categories){
+            categories.add(c);
+        }
+
 	}
 
-    // TODO get all postings from backend via API
 	public void loadDataFromBackendUsingAPI(boolean update_view) {
 		mData.clear();
 
-        // TODO get all postings from backend via API, parse into Posting objects and add to mData
-        // mData.add(posting);
+        final SchoolCraigAPI api = RestClient.get();
+        Collection<Post> posts = api.getPosts();
+        for(Post p : posts){
+            mData.add(new Posting(p));
+        }
 
-        // TODO REMOVE
-        mData.add(new Posting(1, "Roommate for sale", "Trying to get rid of them. Just taking up space.", 0, "john@vanderbilt.edu", "Free", "1/1/2014 5:00 PM"));
-        mData.add(new Posting(1, "General Chemistry Textbook", "General Chemistry textbook for both Chem 102 A and B", 125.50, "sally@vanderbilt.edu", "Textbooks", "1/15/2014 6:00 AM"));
-        mData.add(new Posting(1, "Tickets to Rites of Spring", "Can't go anymore so trying to get rid of them.", 30.00, "jack@vanderbilt.edu", "Tickets", "1/30/2014 12:00 PM"));
-        // TODO END REMOVE
+        //mData.add(new Posting(1, "Roommate for sale", "Trying to get rid of them. Just taking up space.", 0, "john@vanderbilt.edu", "Free", "1/1/2014 5:00 PM"));
+        //mData.add(new Posting(1, "General Chemistry Textbook", "General Chemistry textbook for both Chem 102 A and B", 125.50, "sally@vanderbilt.edu", "Textbooks", "1/15/2014 6:00 AM"));
+        //mData.add(new Posting(1, "Tickets to Rites of Spring", "Can't go anymore so trying to get rid of them.", 30.00, "jack@vanderbilt.edu", "Tickets", "1/30/2014 12:00 PM"));
 
 		if(update_view)
 			this.notifyDataSetChanged();
@@ -112,13 +112,6 @@ public class PostingAdapter extends BaseAdapter implements Filterable {
                 .setText("$" + curPosting.getPriceString());
 		return convertView;
 	}
-
-    // TODO remove once connected to API. Just there so local testing will add new posting to listview.
-    // Will be pulled down using API on listview opening back up.
-    public void addEvent(Posting newPosting) {
-        this.mData.add(newPosting);
-        this.notifyDataSetChanged();
-    }
 
 	@Override
 	public Filter getFilter() {

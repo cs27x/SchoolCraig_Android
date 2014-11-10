@@ -71,8 +71,6 @@ public class AddPostingActivity extends Activity {
 
 	private void addValidNewPosting() {
 		Posting newPosting = new Posting(newPostingTitle, newPostingDescription, newPostingPrice, newPostingPoster, newPostingCategory, newPostingCreationDate);
-        // TODO remove next line once connected via API because on reloading the list view it will update with new posting
-		adapter.addEvent(newPosting);
         newPosting.addPostingViaAPI();
 	}
     
