@@ -11,15 +11,20 @@ import android.widget.Filterable;
 import android.widget.TextView;
 
 import com.cs278.schoolcraig.R;
+import com.cs278.schoolcraig.UserManagement;
+import com.cs278.schoolcraig.api.CallableTask;
 import com.cs278.schoolcraig.api.RestClient;
 import com.cs278.schoolcraig.api.SchoolCraigAPI;
+import com.cs278.schoolcraig.api.TaskCallback;
 import com.cs278.schoolcraig.data.Post;
 import com.cs278.schoolcraig.data.Category;
 import com.cs278.schoolcraig.data.Posting;
+import com.cs278.schoolcraig.data.User;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
+import java.util.concurrent.Callable;
 
 public class PostingAdapter extends BaseAdapter implements Filterable {
 
@@ -53,10 +58,28 @@ public class PostingAdapter extends BaseAdapter implements Filterable {
 	public void initializePossibleCategories() {
 
         final SchoolCraigAPI api = RestClient.get();
-        Collection<Category> categories = api.getCategories();
-        for (Category c : categories){
-            categories.add(c);
-        }
+        CallableTask.invoke(new Callable<Collection<Category>>() {
+                                @Override
+                                public Collection<Category> call() throws Exception {
+                                    Collection<Category> categories = api.getCategories();
+                                    return categories;
+                                }
+                            }, new TaskCallback<Collection<Category>>() {
+
+                                @Override
+                                public void success(Collection<Category> result) {
+                                    Log.d("SUCCESS", "categories retrieved");
+                                    for (Category c : result){
+                                        categories.add(c.getName());
+                                    }
+                                }
+
+                                @Override
+                                public void error(Exception e) {
+                                    Log.d("ERROR", e.getMessage().toString());
+                                }
+                            }
+        );
 
 	}
 
@@ -64,10 +87,28 @@ public class PostingAdapter extends BaseAdapter implements Filterable {
 		mData.clear();
 
         final SchoolCraigAPI api = RestClient.get();
-        Collection<Post> posts = api.getPosts();
-        for(Post p : posts){
-            mData.add(new Posting(p));
-        }
+        CallableTask.invoke(new Callable<Collection<Post>>() {
+                                @Override
+                                public Collection<Post> call() throws Exception {
+                                    Collection<Post> posts = api.getPosts();
+                                    return posts;
+                                }
+                            }, new TaskCallback<Collection<Post>>() {
+
+                                @Override
+                                public void success(Collection<Post> posts) {
+                                    Log.d("SUCCESS", "categories retrieved");
+                                    for(Post p : posts){
+                                        mData.add(new Posting(p));
+                                    }
+                                }
+
+                                @Override
+                                public void error(Exception e) {
+                                    Log.d("ERROR", e.getMessage().toString());
+                                }
+                            }
+        );
 
         //mData.add(new Posting(1, "Roommate for sale", "Trying to get rid of them. Just taking up space.", 0, "john@vanderbilt.edu", "Free", "1/1/2014 5:00 PM"));
         //mData.add(new Posting(1, "General Chemistry Textbook", "General Chemistry textbook for both Chem 102 A and B", 125.50, "sally@vanderbilt.edu", "Textbooks", "1/15/2014 6:00 AM"));

@@ -1,16 +1,21 @@
 package com.cs278.schoolcraig.data;
 
+import android.content.Context;
 import android.util.Log;
 
+import com.cs278.schoolcraig.api.CallableTask;
 import com.cs278.schoolcraig.api.RestClient;
 import com.cs278.schoolcraig.api.SchoolCraigAPI;
+import com.cs278.schoolcraig.api.TaskCallback;
 
 import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Collection;
 import java.util.Date;
 import java.util.Locale;
+import java.util.concurrent.Callable;
 
 public class Posting {
 	private static String log_class;
