@@ -1,6 +1,7 @@
 package com.cs278.schoolcraig.data;
 
 import android.content.Context;
+import android.os.AsyncTask;
 import android.util.Log;
 
 import com.cs278.schoolcraig.api.CallableTask;
@@ -89,17 +90,41 @@ public class Posting {
     }
 
     public void addPostingViaAPI() {
-        final SchoolCraigAPI api = RestClient.get();
-        api.createPost(new Post(this));
+        new Add().execute(this);
     }
 
     public void editPostingViaAPI() {
-        //final SchoolCraigAPI api = RestClient.get();
-        //api.updatePost(String.valueOf(this.getId()));
+        new Edit().execute(this);
     }
 
     public void deletePostingViaAPI() {
-        final SchoolCraigAPI api = RestClient.get();
-        api.deletePost(String.valueOf(this.getId()));
+        new Delete().execute(this);
+    }
+
+    public class Delete extends AsyncTask<Posting, Void, Void> {
+        @Override
+        protected Void doInBackground(Posting... postings) {
+            final SchoolCraigAPI api = RestClient.get();
+            api.deletePost(String.valueOf(postings[0].getId()));
+            return null;
+        }
+    }
+
+    public class Add extends AsyncTask<Posting, Void, Void> {
+        @Override
+        protected Void doInBackground(Posting... postings) {
+            final SchoolCraigAPI api = RestClient.get();
+            api.createPost(new Post(postings[0]));
+            return null;
+        }
+    }
+
+    public class Edit extends AsyncTask<Posting, Void, Void> {
+        @Override
+        protected Void doInBackground(Posting... postings) {
+            final SchoolCraigAPI api = RestClient.get();
+            api.updatePost(String.valueOf(postings[0].getId()), new Post(postings[0]));
+            return null;
+        }
     }
 }
