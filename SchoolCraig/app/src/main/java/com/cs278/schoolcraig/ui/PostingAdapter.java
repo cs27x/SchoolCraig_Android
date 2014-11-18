@@ -1,7 +1,6 @@
 package com.cs278.schoolcraig.ui;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,8 +10,8 @@ import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.TextView;
 
+import com.cs278.schoolcraig.mgmt.Preferences;
 import com.cs278.schoolcraig.R;
-import com.cs278.schoolcraig.UserManagement;
 import com.cs278.schoolcraig.api.CallableTask;
 import com.cs278.schoolcraig.api.RestClient;
 import com.cs278.schoolcraig.api.SchoolCraigAPI;
@@ -20,14 +19,10 @@ import com.cs278.schoolcraig.api.TaskCallback;
 import com.cs278.schoolcraig.data.Post;
 import com.cs278.schoolcraig.data.Category;
 import com.cs278.schoolcraig.data.Posting;
-import com.cs278.schoolcraig.data.User;
-import com.cs278.schoolcraig.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.concurrent.Callable;
 
 public class PostingAdapter extends BaseAdapter implements Filterable {
@@ -56,6 +51,7 @@ ArrayList<Post> filteredPostings;
 		mInflate = (LayoutInflater) this.mContext
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 //		this.mData = new ArrayList<Posting>();
+        Preferences.getInstance().Initialize(context);
         this.mData = new ArrayList<Post>();
 	    getFilter();
 		initializePossibleCategories();
@@ -79,14 +75,11 @@ ArrayList<Post> filteredPostings;
                                     if(result != null)
                                         Log.d("CAT SIZE", result.size()+"");
 
-                                    SharedPreferences.Editor editor = mContext.getSharedPreferences(Utils.CATEGORY_SHARED_PREFS, Context.MODE_PRIVATE).edit();
-
                                     for (Category c : result){
                                         Log.d("CATEGORY", c.getName());
                                         categories.add(c.getName());
-                                        editor.putString(c.getName(), c.getId());
+                                        Preferences.getInstance().writePreference(c.getName(), c.getId());
                                     }
-                                    editor.commit();
                                 }
 
                                 @Override
@@ -135,9 +128,10 @@ ArrayList<Post> filteredPostings;
 
                                 @Override
                                 public void success(Collection<Post> posts) {
-                                    Log.d("SUCCESS", "categories retrieved");
+                                    Log.d("SUCCESS", "posts retrieved");
                                     for(Post p : posts){
                                         mData.add(p);
+                                        Log.d("POST", p.getTitle());
                                     }
                                 }
 
@@ -202,10 +196,8 @@ public long getItemId(int position) {
                 .setText(curPost.getTitle());
         ((TextView)convertView.findViewById(R.id.posting_description))
                 .setText(curPost.getDescription());
-
-        SharedPreferences prefs = mContext.getSharedPreferences(Utils.CATEGORY_SHARED_PREFS, 0);
         ((TextView)convertView.findViewById(R.id.posting_category))
-                .setText(prefs.getString(curPost.getCategoryId(), ""));
+                .setText(Preferences.getInstance().getSavedValue(curPost.getCategoryId()));
         ((TextView)convertView.findViewById(R.id.posting_date_time))
                 .setText(curPost.getDate());
         ((TextView) convertView.findViewById(R.id.posting_price))
@@ -241,9 +233,8 @@ public long getItemId(int position) {
 //						if(posting.getCategory().equals(filterValue))
 //							filteredPostings.add(posting);
 //					}
-                    SharedPreferences prefs = mContext.getSharedPreferences(Utils.CATEGORY_SHARED_PREFS, 0);
                     for(Post post : mData) {
-                        if(prefs.getString(post.getCategoryId(), "").equals(filterValue))
+                        if(Preferences.getInstance().getSavedValue(post.getCategoryId()) != null && Preferences.getInstance().getSavedValue(post.getCategoryId()).equals(filterValue))
                             filteredPostings.add(post);
                     }
 				} else if (filterType.equals("Price Range")) {

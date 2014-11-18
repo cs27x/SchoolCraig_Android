@@ -1,18 +1,15 @@
 package com.cs278.schoolcraig.ui;
 
 import android.app.Fragment;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.content.SharedPreferences;
 
+import com.cs278.schoolcraig.mgmt.Preferences;
 import com.cs278.schoolcraig.R;
 import com.cs278.schoolcraig.data.Post;
-import com.cs278.schoolcraig.data.Posting;
-import com.cs278.schoolcraig.utils.Utils;
 
 /**
  * A fragment representing a single Event detail screen.
@@ -49,6 +46,7 @@ public class PostingDetailFragment extends Fragment {
            	mPosting = PostingAdapter.getInstance(this.getActivity().getApplicationContext())
         			.getItem(index);
         }
+        Preferences.getInstance().Initialize(this.getActivity().getApplicationContext());
     }
 
     @Override
@@ -72,9 +70,8 @@ public class PostingDetailFragment extends Fragment {
         if (mPosting != null) {
             ((TextView) rootView.findViewById(R.id.posting_detail_title))
                     .setText(mPosting.getTitle() + " - $" + mPosting.getCost() );
-            SharedPreferences prefs = this.getActivity().getSharedPreferences(Utils.CATEGORY_SHARED_PREFS, 0);
             ((TextView) rootView.findViewById(R.id.posting_detail_category))
-                    .setText(prefs.getString(mPosting.getCategoryId(), ""));
+                    .setText(Preferences.getInstance().getSavedValue(mPosting.getCategoryId()));
             ((TextView) rootView.findViewById(R.id.event_detail_description))
                     .setText(mPosting.getDescription());
 //            ((TextView) rootView.findViewById(R.id.posting_detail_poster))

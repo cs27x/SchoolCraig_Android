@@ -2,7 +2,6 @@ package com.cs278.schoolcraig.ui;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -11,15 +10,15 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
 
+import com.cs278.schoolcraig.mgmt.Preferences;
 import com.cs278.schoolcraig.R;
-import com.cs278.schoolcraig.UserManagement;
+import com.cs278.schoolcraig.mgmt.UserManagement;
 import com.cs278.schoolcraig.api.CallableTask;
 import com.cs278.schoolcraig.api.RestClient;
 import com.cs278.schoolcraig.api.SchoolCraigAPI;
 import com.cs278.schoolcraig.api.TaskCallback;
 import com.cs278.schoolcraig.data.Post;
 import com.cs278.schoolcraig.data.Posting;
-import com.cs278.schoolcraig.utils.Utils;
 
 import java.util.Calendar;
 import java.util.concurrent.Callable;
@@ -52,6 +51,7 @@ public class AddPostingActivity extends Activity {
 		postingDescription = (EditText)this.findViewById(R.id.add_posting_description);
         postingPrice = (EditText) this.findViewById(R.id.add_posting_price);
 		postingCategory = (Spinner)this.findViewById(R.id.add_posting_category);
+        Preferences.getInstance().Initialize(this.getApplicationContext());
 		setupSpinnerForCategories();
 	}
 	
@@ -80,15 +80,12 @@ public class AddPostingActivity extends Activity {
     }
 
 	private void addValidNewPosting() {
-		//Posting newPosting = new Posting(newPostingTitle, newPostingDescription, newPostingPrice, newPostingPoster, newPostingCategory, newPostingCreationDate);
-        //newPosting.addPostingViaAPI();
 
-        SharedPreferences prefs = getSharedPreferences(Utils.CATEGORY_SHARED_PREFS, 0);
         final Post newPost = new Post(newPostingPrice,
                 userMgmt.getCurrentUserId(),
                 newPostingTitle,
                 newPostingDescription,
-                prefs.getString(newPostingCategory, ""),
+                Preferences.getInstance().getSavedValue(newPostingCategory),
                 newPostingCreationDate);
 
         final SchoolCraigAPI api = RestClient.get();

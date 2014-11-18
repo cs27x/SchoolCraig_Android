@@ -10,7 +10,7 @@ import android.view.View;
 import android.widget.Button;
 
 import com.cs278.schoolcraig.R;
-import com.cs278.schoolcraig.UserManagement;
+import com.cs278.schoolcraig.mgmt.UserManagement;
 
 /**
  * An activity representing a list of Events. This activity

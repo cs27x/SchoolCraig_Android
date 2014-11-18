@@ -25,7 +25,7 @@ import com.cs278.schoolcraig.R;
 import com.cs278.schoolcraig.api.RestClient;
 import com.cs278.schoolcraig.api.SchoolCraigAPI;
 import com.cs278.schoolcraig.api.TaskCallback;
-import com.cs278.schoolcraig.UserManagement;
+import com.cs278.schoolcraig.mgmt.UserManagement;
 import com.cs278.schoolcraig.UserRegisterLoginTask;
 import com.cs278.schoolcraig.data.User;
 

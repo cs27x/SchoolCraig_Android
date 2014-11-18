@@ -1,7 +1,6 @@
-package com.cs278.schoolcraig;
+package com.cs278.schoolcraig.mgmt;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 
 /**
  * Created by Alex on 10/23/2014.
@@ -11,14 +10,9 @@ public class UserManagement {
     private static final String USER_EMAIL = "email";
     private static final String USER_ID = "id";
     private static UserManagement instance = null;
-    private static Context appContext = null;
-    private static SharedPreferences userDetails = null;
-    private static SharedPreferences.Editor editor = null;
 
     protected UserManagement(Context context) {
-        appContext = context;
-        userDetails = appContext.getSharedPreferences(APP_SHARED_PREFS, Context.MODE_PRIVATE);
-        editor = userDetails.edit();
+        Preferences.getInstance().Initialize(context);
     }
 
     public static UserManagement getInstance(Context context) {
@@ -28,28 +22,25 @@ public class UserManagement {
     }
 
     public void addUserEmail(String email) {
-        editor.putString(USER_EMAIL, email);
-        editor.commit();
+        Preferences.getInstance().writePreference(USER_EMAIL, email);
     }
 
     public void addUserId(String id) {
-        editor.putString(USER_ID, id);
-        editor.commit();
+        Preferences.getInstance().writePreference(USER_ID, id);
     }
 
     public String getCurrentUserEmail() {
-        return userDetails.getString(USER_EMAIL, "");
+        return Preferences.getInstance().getSavedValue(USER_EMAIL);
     }
     public String getCurrentUserId() {
-        return userDetails.getString(USER_ID, "");
+        return Preferences.getInstance().getSavedValue(USER_ID);
     }
 
     public void clearUserDetails() {
-        editor.clear();
-        editor.commit();
+        Preferences.getInstance().clear();
     }
 
     public boolean userDetailsExist() {
-        return userDetails.contains(USER_EMAIL);
+        return Preferences.getInstance().detailsExist(USER_EMAIL);
     }
 }

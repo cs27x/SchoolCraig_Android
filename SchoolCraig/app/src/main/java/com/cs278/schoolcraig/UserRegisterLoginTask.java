@@ -19,6 +19,7 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 
 import com.cs278.schoolcraig.data.User;
+import com.cs278.schoolcraig.mgmt.UserManagement;
 import com.cs278.schoolcraig.ui.PostingListActivity;
 import com.cs278.schoolcraig.utils.Utils;
 import com.google.gson.Gson;

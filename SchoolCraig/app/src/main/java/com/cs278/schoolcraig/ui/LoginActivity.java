@@ -23,19 +23,17 @@ import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.cs278.schoolcraig.mgmt.Preferences;
 import com.cs278.schoolcraig.api.CallableTask;
 import com.cs278.schoolcraig.R;
 import com.cs278.schoolcraig.api.RestClient;
 import com.cs278.schoolcraig.api.SchoolCraigAPI;
 import com.cs278.schoolcraig.api.TaskCallback;
-import com.cs278.schoolcraig.UserManagement;
+import com.cs278.schoolcraig.mgmt.UserManagement;
 import com.cs278.schoolcraig.UserRegisterLoginTask;
 import com.cs278.schoolcraig.data.Auth;
 import com.cs278.schoolcraig.data.User;
 
-import java.net.CookieHandler;
-import java.net.CookieManager;
-import java.net.CookiePolicy;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Callable;
@@ -65,6 +63,9 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor>{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        Preferences.getInstance().Initialize(this.getApplicationContext());
+
         userMgmt = UserManagement.getInstance(getApplicationContext());
         checkUserLoggedInOrContinue();
 
