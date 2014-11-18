@@ -8,8 +8,9 @@ public class Post {
     private String id;
     private double cost;
     private String user_id;
+    private String title;
     private String description;
-    private String category;
+    private String category_id;
     private String date;
 
     public Post(){
@@ -21,16 +22,27 @@ public class Post {
         this.cost = p.getPrice();
         this.user_id = p.getUser_id();
         this.description = p.getDescription();
-        this.category = p.getCategory();
+        this.category_id = p.getCategory();
         this.date = p.getCreationDateString();
     }
 
-    public Post(String id, double cost, String user_id, String description, String category, String date){
+    public Post(String id, double cost, String user_id, String title, String description, String category_id, String date){
         this.id = id;
         this.cost = cost;
         this.user_id = user_id;
+        this.title = title;
         this.description = description;
-        this.category = category;
+        this.category_id = category_id;
+        this.date = date;
+    }
+
+    public Post(double cost, String user_id, String title, String description, String category_id, String date){
+
+        this.cost = cost;
+        this.user_id = user_id;
+        this.title = title;
+        this.description = description;
+        this.category_id = category_id;
         this.date = date;
     }
 
@@ -39,10 +51,12 @@ public class Post {
     public double getCost() { return cost; }
     public void setCost(double cost) { this.cost = cost; };
     public String getUser_id() { return user_id; }
+    public String getTitle() { return title; }
+    public void setTitle(String title) { this.title = title; }
     public String getDescription() { return description; }
     public void setDescription(String description) { this.description = description; }
-    public String getCategory() { return category; }
-    public void setCategory(String category) { this.category = category; }
+    public String getCategoryId() { return category_id; }
+    public void setCategory(String category_id) { this.category_id = category_id; }
     public String getDate() { return date; }
     public  void setDate(String date) { this.date = date; }
 }

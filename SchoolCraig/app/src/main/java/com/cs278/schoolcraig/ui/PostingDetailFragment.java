@@ -1,14 +1,18 @@
 package com.cs278.schoolcraig.ui;
 
 import android.app.Fragment;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.content.SharedPreferences;
 
 import com.cs278.schoolcraig.R;
+import com.cs278.schoolcraig.data.Post;
 import com.cs278.schoolcraig.data.Posting;
+import com.cs278.schoolcraig.utils.Utils;
 
 /**
  * A fragment representing a single Event detail screen.
@@ -26,7 +30,8 @@ public class PostingDetailFragment extends Fragment {
     /**
      * The dummy content this fragment is presenting.
      */
-    private Posting mPosting;
+//    private Posting mPosting;
+    private Post mPosting;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -52,17 +57,30 @@ public class PostingDetailFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_posting_detail, container, false);
 
         // Show the dummy content as text in a TextView.
+//        if (mPosting != null) {
+//            ((TextView) rootView.findViewById(R.id.posting_detail_title))
+//                    .setText(mPosting.getTitle() + " - $" + mPosting.getPriceString() );
+//            ((TextView) rootView.findViewById(R.id.posting_detail_category))
+//                    .setText(mPosting.getCategory());
+//            ((TextView) rootView.findViewById(R.id.event_detail_description))
+//                    .setText(mPosting.getDescription());
+//            ((TextView) rootView.findViewById(R.id.posting_detail_poster))
+//                    .setText(mPosting.getPoster());
+//            ((TextView) rootView.findViewById(R.id.posting_detail_creation_date))
+//                    .setText("Posted: " + mPosting.getCreationDateString());
+//        }
         if (mPosting != null) {
             ((TextView) rootView.findViewById(R.id.posting_detail_title))
-                    .setText(mPosting.getTitle() + " - $" + mPosting.getPriceString() );
+                    .setText(mPosting.getTitle() + " - $" + mPosting.getCost() );
+            SharedPreferences prefs = this.getActivity().getSharedPreferences(Utils.CATEGORY_SHARED_PREFS, 0);
             ((TextView) rootView.findViewById(R.id.posting_detail_category))
-                    .setText(mPosting.getCategory());
+                    .setText(prefs.getString(mPosting.getCategoryId(), ""));
             ((TextView) rootView.findViewById(R.id.event_detail_description))
                     .setText(mPosting.getDescription());
-            ((TextView) rootView.findViewById(R.id.posting_detail_poster))
-                    .setText(mPosting.getPoster());
+//            ((TextView) rootView.findViewById(R.id.posting_detail_poster))
+//                    .setText(mPosting.getPoster());
             ((TextView) rootView.findViewById(R.id.posting_detail_creation_date))
-                    .setText("Posted: " + mPosting.getCreationDateString());
+                    .setText("Posted: " + mPosting.getDate());
         }
         return rootView;
     }

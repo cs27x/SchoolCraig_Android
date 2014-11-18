@@ -35,7 +35,7 @@ public class Posting {
     // "month/day/4-digit-year hour:minute AM-or-PM"
     // TODO add image next iteration
     public Posting(Post p){
-        this(Integer.valueOf(p.getId()), p.getUser_id(), "Add Title to getPosts?", p.getDescription(), p.getCost(), p.getUser_id(), p.getCategory(), p.getDate());
+        this(Integer.valueOf(p.getId()), p.getUser_id(), "Add Title to getPosts?", p.getDescription(), p.getCost(), p.getUser_id(), p.getCategoryId(), p.getDate());
     }
 
     public Posting(int id, String user_id, String title, String description, double price, String poster, String category, String creationDate) {
@@ -94,8 +94,8 @@ public class Posting {
     }
 
     public void editPostingViaAPI() {
-        final SchoolCraigAPI api = RestClient.get();
-        api.updatePost(String.valueOf(this.getId()));
+        //final SchoolCraigAPI api = RestClient.get();
+        //api.updatePost(String.valueOf(this.getId()));
     }
 
     public void deletePostingViaAPI() {

@@ -38,7 +38,7 @@ public interface SchoolCraigAPI {
     public Post getPost(@Path("postid") String post_id);
 
     @PUT("/post/id/{postid}")
-    public Void updatePost(@Path("postid") String post_id);
+    public Void updatePost(@Path("postid") String post_id, @Body Post p);
 
     @POST("/user")
     public Void createUser(@Body User u);
@@ -53,7 +53,7 @@ public interface SchoolCraigAPI {
     public Void deauthUser();
 
     @PUT("/user/id/{userid}")
-    public Void updateUser(@Path("userid") String user_id);
+    public Void updateUser(@Path("userid") String user_id, @Body User u);
 
     @DELETE("/user/id/{userid}")
     public Void deleteUser(@Path("userid") String user_id);

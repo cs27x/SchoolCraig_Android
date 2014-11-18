@@ -1,8 +1,11 @@
 package com.cs278.schoolcraig.ui;
 
 import android.app.Activity;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
@@ -10,9 +13,16 @@ import android.widget.Spinner;
 
 import com.cs278.schoolcraig.R;
 import com.cs278.schoolcraig.UserManagement;
+import com.cs278.schoolcraig.api.CallableTask;
+import com.cs278.schoolcraig.api.RestClient;
+import com.cs278.schoolcraig.api.SchoolCraigAPI;
+import com.cs278.schoolcraig.api.TaskCallback;
+import com.cs278.schoolcraig.data.Post;
 import com.cs278.schoolcraig.data.Posting;
+import com.cs278.schoolcraig.utils.Utils;
 
 import java.util.Calendar;
+import java.util.concurrent.Callable;
 
 public class AddPostingActivity extends Activity {
 	private String TAG = getClass().getSimpleName();
@@ -70,9 +80,51 @@ public class AddPostingActivity extends Activity {
     }
 
 	private void addValidNewPosting() {
-		Posting newPosting = new Posting(newPostingTitle, newPostingDescription, newPostingPrice, newPostingPoster, newPostingCategory, newPostingCreationDate);
-        newPosting.addPostingViaAPI();
+		//Posting newPosting = new Posting(newPostingTitle, newPostingDescription, newPostingPrice, newPostingPoster, newPostingCategory, newPostingCreationDate);
+        //newPosting.addPostingViaAPI();
+
+        SharedPreferences prefs = getSharedPreferences(Utils.CATEGORY_SHARED_PREFS, 0);
+        final Post newPost = new Post(newPostingPrice,
+                userMgmt.getCurrentUserId(),
+                newPostingTitle,
+                newPostingDescription,
+                prefs.getString(newPostingCategory, ""),
+                newPostingCreationDate);
+
+        final SchoolCraigAPI api = RestClient.get();
+
+        CallableTask.invoke(new Callable<Void>() {
+                                @Override
+                                public Void call() throws Exception {
+                                    api.createPost(newPost);
+                                    return null;
+                                }
+                            }, new TaskCallback<Void>() {
+                                @Override
+                                public void success(Void result) {
+                                    Log.d("SUCCESS", "post stored");
+                                    //showProgress(false);
+
+                                    backToPostingListActivity();
+                                }
+
+                                @Override
+                                public void error(Exception e) {
+                                    Log.d("ERROR", e.getMessage().toString());
+                                    //showProgress(false);
+                                }
+                            }
+        );
+
+
 	}
+
+    private void backToPostingListActivity() {
+        Intent intent = new Intent(AddPostingActivity.this, PostingListActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        this.finish();
+        this.startActivity(intent);
+    }
     
     private View getViewWithErrorIfThereIsOne() {
 		// Check valid entries. Title not empty, location not empty and valid address,

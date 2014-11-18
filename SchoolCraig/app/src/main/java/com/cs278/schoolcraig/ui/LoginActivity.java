@@ -33,6 +33,9 @@ import com.cs278.schoolcraig.UserRegisterLoginTask;
 import com.cs278.schoolcraig.data.Auth;
 import com.cs278.schoolcraig.data.User;
 
+import java.net.CookieHandler;
+import java.net.CookieManager;
+import java.net.CookiePolicy;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Callable;
@@ -175,7 +178,7 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor>{
 
 //            mAuthTask = new UserLoginTask(email, password);
 //            mAuthTask.execute((Void) null);
-            User user = new User(email, password);
+            //User user = new User(email, password);
 //            mRegLoginTask = new UserRegisterLoginTask(LoginActivity.this, user);
 //            mRegLoginTask.execute(Utils.LOGIN);
 
@@ -194,6 +197,7 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor>{
                                         showProgress(false);
 
                                         userMgmt = UserManagement.getInstance(LoginActivity.this);
+                                        userMgmt.addUserId(user.getId());
                                         userMgmt.addUserEmail(user.getEmail());
 
                                         startPostingListActivity();

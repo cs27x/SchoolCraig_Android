@@ -1,6 +1,7 @@
 package com.cs278.schoolcraig.ui;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,10 +21,13 @@ import com.cs278.schoolcraig.data.Post;
 import com.cs278.schoolcraig.data.Category;
 import com.cs278.schoolcraig.data.Posting;
 import com.cs278.schoolcraig.data.User;
+import com.cs278.schoolcraig.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.Callable;
 
 public class PostingAdapter extends BaseAdapter implements Filterable {
@@ -33,9 +37,11 @@ public class PostingAdapter extends BaseAdapter implements Filterable {
 	private static PostingAdapter instance = null;
 	private LayoutInflater mInflate;
 	private Context mContext;
-	private ArrayList<Posting> mData;
+//	private ArrayList<Posting> mData;
+private ArrayList<Post> mData;
 	private PostingFilter postingFilter;
-	ArrayList<Posting> filteredPostings;
+//	ArrayList<Posting> filteredPostings;
+ArrayList<Post> filteredPostings;
 
 	public ArrayList<String> categories = new ArrayList<String>();
 	
@@ -49,8 +55,9 @@ public class PostingAdapter extends BaseAdapter implements Filterable {
 		this.mContext = context;
 		mInflate = (LayoutInflater) this.mContext
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-		this.mData = new ArrayList<Posting>();
-		getFilter();
+//		this.mData = new ArrayList<Posting>();
+        this.mData = new ArrayList<Post>();
+	    getFilter();
 		initializePossibleCategories();
         loadDataFromBackendUsingAPI(true);
 	}
@@ -61,17 +68,25 @@ public class PostingAdapter extends BaseAdapter implements Filterable {
         CallableTask.invoke(new Callable<Collection<Category>>() {
                                 @Override
                                 public Collection<Category> call() throws Exception {
-                                    Collection<Category> categories = api.getCategories();
-                                    return categories;
+                                    return api.getCategories();
                                 }
                             }, new TaskCallback<Collection<Category>>() {
 
                                 @Override
                                 public void success(Collection<Category> result) {
                                     Log.d("SUCCESS", "categories retrieved");
+
+                                    if(result != null)
+                                        Log.d("CAT SIZE", result.size()+"");
+
+                                    SharedPreferences.Editor editor = mContext.getSharedPreferences(Utils.CATEGORY_SHARED_PREFS, Context.MODE_PRIVATE).edit();
+
                                     for (Category c : result){
+                                        Log.d("CATEGORY", c.getName());
                                         categories.add(c.getName());
+                                        editor.putString(c.getName(), c.getId());
                                     }
+                                    editor.commit();
                                 }
 
                                 @Override
@@ -86,6 +101,29 @@ public class PostingAdapter extends BaseAdapter implements Filterable {
 	public void loadDataFromBackendUsingAPI(boolean update_view) {
 		mData.clear();
 
+//        final SchoolCraigAPI api = RestClient.get();
+//        CallableTask.invoke(new Callable<Collection<Post>>() {
+//                                @Override
+//                                public Collection<Post> call() throws Exception {
+//                                    Collection<Post> posts = api.getPosts();
+//                                    return posts;
+//                                }
+//                            }, new TaskCallback<Collection<Post>>() {
+//
+//                                @Override
+//                                public void success(Collection<Post> posts) {
+//                                    Log.d("SUCCESS", "categories retrieved");
+//                                    for(Post p : posts){
+//                                        mData.add(new Posting(p));
+//                                    }
+//                                }
+//
+//                                @Override
+//                                public void error(Exception e) {
+//                                    Log.d("ERROR", e.getMessage().toString());
+//                                }
+//                            }
+//        );
         final SchoolCraigAPI api = RestClient.get();
         CallableTask.invoke(new Callable<Collection<Post>>() {
                                 @Override
@@ -99,7 +137,7 @@ public class PostingAdapter extends BaseAdapter implements Filterable {
                                 public void success(Collection<Post> posts) {
                                     Log.d("SUCCESS", "categories retrieved");
                                     for(Post p : posts){
-                                        mData.add(new Posting(p));
+                                        mData.add(p);
                                     }
                                 }
 
@@ -123,34 +161,55 @@ public class PostingAdapter extends BaseAdapter implements Filterable {
 		return mData.size();
 	}
 
-	@Override
-	public Posting getItem(int position) {
-		return mData.get(position);
-	}
+//	@Override
+//	public Posting getItem(int position) {
+//		return mData.get(position);
+//	}
+@Override
+public Post getItem(int position) {
+    return mData.get(position);
+}
 
-	@Override
-	public long getItemId(int position) {
-		return (long)mData.get(position).getId();
-	}
+//	@Override
+//	public long getItemId(int position) {
+//		return (long)mData.get(position).getId();
+//	}
+@Override
+public long getItemId(int position) {
+    return 0;
+}
 
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		if(convertView == null) {
 			convertView = this.mInflate.inflate(R.layout.list_posting_layout, parent, false);
 		}
-		Posting curPosting = getItem(position);
-		((TextView)convertView.findViewById(R.id.posting_title))
-                .setText(curPosting.getTitle());
-		((TextView)convertView.findViewById(R.id.posting_description))
-                .setText(curPosting.getDescription());
-        ((TextView)convertView.findViewById(R.id.posting_poster))
-                .setText(curPosting.getPoster());
-		((TextView)convertView.findViewById(R.id.posting_category))
-                .setText(curPosting.getCategory());
-		((TextView)convertView.findViewById(R.id.posting_date_time))
-                .setText(curPosting.getCreationDateString());
+//		Posting curPosting = getItem(position);
+//		((TextView)convertView.findViewById(R.id.posting_title))
+//                .setText(curPosting.getTitle());
+//		((TextView)convertView.findViewById(R.id.posting_description))
+//                .setText(curPosting.getDescription());
+//        ((TextView)convertView.findViewById(R.id.posting_poster))
+//                .setText(curPosting.getPoster());
+//		((TextView)convertView.findViewById(R.id.posting_category))
+//                .setText(curPosting.getCategory());
+//		((TextView)convertView.findViewById(R.id.posting_date_time))
+//                .setText(curPosting.getCreationDateString());
+//        ((TextView) convertView.findViewById(R.id.posting_price))
+//                .setText("$" + curPosting.getPriceString());
+        Post curPost = getItem(position);
+        ((TextView)convertView.findViewById(R.id.posting_title))
+                .setText(curPost.getTitle());
+        ((TextView)convertView.findViewById(R.id.posting_description))
+                .setText(curPost.getDescription());
+
+        SharedPreferences prefs = mContext.getSharedPreferences(Utils.CATEGORY_SHARED_PREFS, 0);
+        ((TextView)convertView.findViewById(R.id.posting_category))
+                .setText(prefs.getString(curPost.getCategoryId(), ""));
+        ((TextView)convertView.findViewById(R.id.posting_date_time))
+                .setText(curPost.getDate());
         ((TextView) convertView.findViewById(R.id.posting_price))
-                .setText("$" + curPosting.getPriceString());
+                .setText("$" + curPost.getCost());
 		return convertView;
 	}
 
@@ -170,39 +229,58 @@ public class PostingAdapter extends BaseAdapter implements Filterable {
 				result.values = mData;
 				result.count = mData.size();
 			} else {
-				filteredPostings = new ArrayList<Posting>();
+//				filteredPostings = new ArrayList<Posting>();
+                filteredPostings = new ArrayList<Post>();
 				String constr_str = constraint.toString();
 				String[] filterTypeAndValue = constr_str.split("\\|");
 				String filterType = filterTypeAndValue[0];
 				String filterValue =  filterTypeAndValue[1];
 				
 				if(filterType.equals("Category")) {
-					for(Posting posting : mData) {
-						if(posting.getCategory().equals(filterValue))
-							filteredPostings.add(posting);
-					}
+//					for(Posting posting : mData) {
+//						if(posting.getCategory().equals(filterValue))
+//							filteredPostings.add(posting);
+//					}
+                    SharedPreferences prefs = mContext.getSharedPreferences(Utils.CATEGORY_SHARED_PREFS, 0);
+                    for(Post post : mData) {
+                        if(prefs.getString(post.getCategoryId(), "").equals(filterValue))
+                            filteredPostings.add(post);
+                    }
 				} else if (filterType.equals("Price Range")) {
                     String[] rangeStrings = filterValue.split("-");
                     double minRange = Double.parseDouble(rangeStrings[0]);
                     double maxRange = Double.parseDouble(rangeStrings[1]);
-                    for(Posting posting : mData) {
-                        double postingPrice = posting.getPrice();
+//                    for(Posting posting : mData) {
+//                        double postingPrice = posting.getPrice();
+//                        if(minRange <= postingPrice && postingPrice <= maxRange)
+//                            filteredPostings.add(posting);
+//                    }
+                    for(Post post : mData) {
+                        double postingPrice = post.getCost();
                         if(minRange <= postingPrice && postingPrice <= maxRange)
-                            filteredPostings.add(posting);
+                            filteredPostings.add(post);
                     }
                 } else if (filterType.equals("By Date")) {
 					Calendar dateToCompare = Calendar.getInstance();
 					dateToCompare.setTime(Posting.getDateFromString(filterValue));
-					for(Posting posting : mData) {
-                        Calendar postingCal = posting.getCreationDateCalendar();
-						if(postingCal.get(Calendar.YEAR) == dateToCompare.get(Calendar.YEAR)
-								&& postingCal.get(Calendar.DAY_OF_YEAR) == dateToCompare.get(Calendar.DAY_OF_YEAR)) {
-							filteredPostings.add(posting);
-						}
-					}
+//					for(Posting posting : mData) {
+//                        Calendar postingCal = posting.getCreationDateCalendar();
+//						if(postingCal.get(Calendar.YEAR) == dateToCompare.get(Calendar.YEAR)
+//								&& postingCal.get(Calendar.DAY_OF_YEAR) == dateToCompare.get(Calendar.DAY_OF_YEAR)) {
+//							filteredPostings.add(posting);
+//						}
+//					}
+//                    for(Post post : mData) {
+//                        Calendar postingCal = post.getCreationDate();
+//                        if(postingCal.get(Calendar.YEAR) == dateToCompare.get(Calendar.YEAR)
+//                                && postingCal.get(Calendar.DAY_OF_YEAR) == dateToCompare.get(Calendar.DAY_OF_YEAR)) {
+//                            filteredPostings.add(posting);
+//                        }
+//                    }
 				} else if (filterType.equals("Reset Filters")) {
                     loadDataFromBackendUsingAPI(false);
-					filteredPostings = new ArrayList<Posting>(mData);
+//					filteredPostings = new ArrayList<Posting>(mData);
+                    filteredPostings = new ArrayList<Post>(mData);
 				}
 				result.values = filteredPostings;
 				result.count = filteredPostings.size();
@@ -217,7 +295,8 @@ public class PostingAdapter extends BaseAdapter implements Filterable {
 		protected void publishResults(CharSequence constraint,
 				FilterResults results) {
             mData.clear();
-			mData = (ArrayList<Posting>) results.values;
+//			mData = (ArrayList<Posting>) results.values;
+            filteredPostings = new ArrayList<Post>(mData);
 			notifyDataSetChanged();
 		}
 	}

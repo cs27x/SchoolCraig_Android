@@ -12,8 +12,8 @@ public class Utils {
 
     public static final int REGISTER = 1;
     public static final int LOGIN = 2;
-    public final static String CREATE_USER = "https://school-craig.herokuapp.com/user";
-    public final static String AUTH_USER = "https://school-craig.herokuapp.com/user/auth";
-
+    public static final String CREATE_USER = "https://school-craig.herokuapp.com/user";
+    public static final String AUTH_USER = "https://school-craig.herokuapp.com/user/auth";
+    public static final String CATEGORY_SHARED_PREFS = "categories";
 
 }

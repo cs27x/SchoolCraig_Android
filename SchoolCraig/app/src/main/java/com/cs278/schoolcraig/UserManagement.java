@@ -9,6 +9,7 @@ import android.content.SharedPreferences;
 public class UserManagement {
     private static final String APP_SHARED_PREFS = "userdetails";
     private static final String USER_EMAIL = "email";
+    private static final String USER_ID = "id";
     private static UserManagement instance = null;
     private static Context appContext = null;
     private static SharedPreferences userDetails = null;
@@ -31,8 +32,16 @@ public class UserManagement {
         editor.commit();
     }
 
+    public void addUserId(String id) {
+        editor.putString(USER_ID, id);
+        editor.commit();
+    }
+
     public String getCurrentUserEmail() {
         return userDetails.getString(USER_EMAIL, "");
+    }
+    public String getCurrentUserId() {
+        return userDetails.getString(USER_ID, "");
     }
 
     public void clearUserDetails() {

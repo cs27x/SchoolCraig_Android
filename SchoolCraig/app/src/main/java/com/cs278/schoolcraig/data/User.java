@@ -13,7 +13,6 @@ public class User {
     private String password;
 
     public User(){
-        //id = UUID.randomUUID().toString();
     }
 
     public User(String i, String f, String l, String e, String p){
@@ -29,12 +28,6 @@ public class User {
         super();
         fname = f;
         lname = l;
-        email = e;
-        password = p;
-    }
-
-    public User(String e, String p){
-        super();
         email = e;
         password = p;
     }
