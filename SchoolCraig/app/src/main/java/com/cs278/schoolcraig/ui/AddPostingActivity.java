@@ -101,7 +101,7 @@ public class AddPostingActivity extends Activity {
                                 public void success(Void result) {
                                     Log.d("SUCCESS", "post stored");
                                     //showProgress(false);
-                                    adapter.addPost(newPost);
+                                    //adapter.addPost(newPost);
                                     backToPostingListActivity();
                                 }
 
