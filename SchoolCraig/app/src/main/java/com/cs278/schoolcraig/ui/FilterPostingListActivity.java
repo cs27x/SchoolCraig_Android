@@ -14,8 +14,6 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.cs278.schoolcraig.R;
-import com.cs278.schoolcraig.data.Post;
-import com.cs278.schoolcraig.data.Posting;
 import com.cs278.schoolcraig.utils.Utils;
 
 import java.util.Calendar;

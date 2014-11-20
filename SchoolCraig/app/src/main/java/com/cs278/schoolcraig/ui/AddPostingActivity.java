@@ -18,7 +18,6 @@ import com.cs278.schoolcraig.api.RestClient;
 import com.cs278.schoolcraig.api.SchoolCraigAPI;
 import com.cs278.schoolcraig.api.TaskCallback;
 import com.cs278.schoolcraig.data.Post;
-import com.cs278.schoolcraig.data.Posting;
 import com.cs278.schoolcraig.utils.Utils;
 
 import java.util.Calendar;

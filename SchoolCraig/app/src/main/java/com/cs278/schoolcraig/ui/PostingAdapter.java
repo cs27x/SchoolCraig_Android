@@ -18,9 +18,7 @@ import com.cs278.schoolcraig.api.SchoolCraigAPI;
 import com.cs278.schoolcraig.api.TaskCallback;
 import com.cs278.schoolcraig.data.Post;
 import com.cs278.schoolcraig.data.Category;
-import com.cs278.schoolcraig.data.Posting;
 import com.cs278.schoolcraig.utils.Utils;
-import com.squareup.okhttp.internal.Util;
 
 import java.util.ArrayList;
 import java.util.Calendar;
