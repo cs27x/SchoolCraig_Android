@@ -14,7 +14,9 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.cs278.schoolcraig.R;
+import com.cs278.schoolcraig.data.Post;
 import com.cs278.schoolcraig.data.Posting;
+import com.cs278.schoolcraig.utils.Utils;
 
 import java.util.Calendar;
 
@@ -96,7 +98,7 @@ public class FilterPostingListActivity extends Activity {
 			Calendar filterDateTime = Calendar.getInstance();
 			filterDateTime.set(filterPostingDate.getYear(), filterPostingDate.getMonth(),
                     filterPostingDate.getDayOfMonth());
-			filter += Posting.sdf.format(filterDateTime.getTime());
+			filter += Utils.sdf.format(filterDateTime.getTime());
 		} else {
 			filter += "NULL";
 		}

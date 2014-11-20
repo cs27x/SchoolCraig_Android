@@ -79,8 +79,7 @@ public class PostingListFragment extends ListFragment {
     	super.onResume();
     	// Update the data in the adapter whenever the list is viewed again.
     	if(!PostingListActivity.filtered) {
-            // TODO Uncomment next line when able to load data from backend.
-    		//postingAdapter.loadDataFromBackendUsingAPI(true);
+    		postingAdapter.loadDataFromBackendUsingAPI(true);
     		PostingListActivity.filtered = false;
     	}
     }

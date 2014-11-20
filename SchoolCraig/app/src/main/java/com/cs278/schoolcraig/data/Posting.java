@@ -18,7 +18,7 @@ import java.util.Locale;
 import java.util.concurrent.Callable;
 
 public class Posting {
-	private static String log_class;
+	/*private static String log_class;
 
     public static SimpleDateFormat sdf = new SimpleDateFormat("M/d/yyyy h:mm aaa", Locale.US);
     public static DecimalFormat df = new DecimalFormat("#0.00");
@@ -72,16 +72,7 @@ public class Posting {
     public Calendar getCreationDateCalendar() { return this.creationDate; }
     public void setCreationDate(String creationDate) { this.creationDate.setTime(getDateFromString(creationDate)); }
 
-    public static Date getDateFromString(String dateTime) {
-        Date date = null;
-        try {
-            date = sdf.parse(dateTime);
-        } catch (ParseException e) {
-            Log.d(log_class, "Failure parsing the date and time.");
-            e.printStackTrace();
-        }
-        return date;
-    }
+
 
     @Override
     public String toString() {
@@ -101,5 +92,5 @@ public class Posting {
     public void deletePostingViaAPI() {
         final SchoolCraigAPI api = RestClient.get();
         api.deletePost(String.valueOf(this.getId()));
-    }
+    }*/
 }

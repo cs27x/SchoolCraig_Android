@@ -19,6 +19,7 @@ import com.cs278.schoolcraig.api.SchoolCraigAPI;
 import com.cs278.schoolcraig.api.TaskCallback;
 import com.cs278.schoolcraig.data.Post;
 import com.cs278.schoolcraig.data.Posting;
+import com.cs278.schoolcraig.utils.Utils;
 
 import java.util.Calendar;
 import java.util.concurrent.Callable;
@@ -73,7 +74,7 @@ public class AddPostingActivity extends Activity {
             this.newPostingPoster = userMgmt.getCurrentUserEmail();
             this.newPostingCategory = this.postingCategory.getSelectedItem().toString();
             Calendar now = Calendar.getInstance();
-            this.newPostingCreationDate = Posting.sdf.format(now.getTime());
+            this.newPostingCreationDate = Utils.sdf.format(now.getTime());
             addValidNewPosting();
             finish();
         }
@@ -101,7 +102,7 @@ public class AddPostingActivity extends Activity {
                                 public void success(Void result) {
                                     Log.d("SUCCESS", "post stored");
                                     //showProgress(false);
-
+                                    adapter.addPost(newPost);
                                     backToPostingListActivity();
                                 }
 

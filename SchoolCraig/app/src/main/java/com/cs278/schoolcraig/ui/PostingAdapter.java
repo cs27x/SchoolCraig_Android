@@ -19,6 +19,8 @@ import com.cs278.schoolcraig.api.TaskCallback;
 import com.cs278.schoolcraig.data.Post;
 import com.cs278.schoolcraig.data.Category;
 import com.cs278.schoolcraig.data.Posting;
+import com.cs278.schoolcraig.utils.Utils;
+import com.squareup.okhttp.internal.Util;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -91,7 +93,7 @@ ArrayList<Post> filteredPostings;
 
 	}
 
-	public void loadDataFromBackendUsingAPI(boolean update_view) {
+	public void loadDataFromBackendUsingAPI(final boolean update_view) {
 		mData.clear();
 
 //        final SchoolCraigAPI api = RestClient.get();
@@ -133,6 +135,8 @@ ArrayList<Post> filteredPostings;
                                         mData.add(p);
                                         Log.d("POST", p.getTitle());
                                     }
+                                    if(update_view)
+                                        PostingAdapter.this.notifyDataSetChanged();
                                 }
 
                                 @Override
@@ -146,9 +150,12 @@ ArrayList<Post> filteredPostings;
         //mData.add(new Posting(1, "General Chemistry Textbook", "General Chemistry textbook for both Chem 102 A and B", 125.50, "sally@vanderbilt.edu", "Textbooks", "1/15/2014 6:00 AM"));
         //mData.add(new Posting(1, "Tickets to Rites of Spring", "Can't go anymore so trying to get rid of them.", 30.00, "jack@vanderbilt.edu", "Tickets", "1/30/2014 12:00 PM"));
 
-		if(update_view)
-			this.notifyDataSetChanged();
 	}
+
+    public void addPost(Post newPost){
+        this.mData.add(newPost);
+        this.notifyDataSetChanged();
+    }
 	
 	@Override
 	public int getCount() {
@@ -199,7 +206,7 @@ public long getItemId(int position) {
         ((TextView)convertView.findViewById(R.id.posting_category))
                 .setText(Preferences.getInstance().getSavedValue(curPost.getCategoryId()));
         ((TextView)convertView.findViewById(R.id.posting_date_time))
-                .setText(curPost.getDate());
+                .setText(Utils.getFormattedDateStr(curPost.getDate()));
         ((TextView) convertView.findViewById(R.id.posting_price))
                 .setText("$" + curPost.getCost());
 		return convertView;
@@ -253,7 +260,7 @@ public long getItemId(int position) {
                     }
                 } else if (filterType.equals("By Date")) {
 					Calendar dateToCompare = Calendar.getInstance();
-					dateToCompare.setTime(Posting.getDateFromString(filterValue));
+					dateToCompare.setTime(Utils.getDateFromString(filterValue));
 //					for(Posting posting : mData) {
 //                        Calendar postingCal = posting.getCreationDateCalendar();
 //						if(postingCal.get(Calendar.YEAR) == dateToCompare.get(Calendar.YEAR)
