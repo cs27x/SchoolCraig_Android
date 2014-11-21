@@ -78,7 +78,7 @@ ArrayList<Post> filteredPostings;
                                     for (Category c : result){
                                         Log.d("CATEGORY", c.getName());
                                         categories.add(c.getName());
-                                        Preferences.getInstance().writePreference(c.getName(), c.getId());
+                                        //Preferences.getInstance().writePreference(c.getName(), c.getId());
                                     }
                                 }
 
@@ -132,6 +132,9 @@ ArrayList<Post> filteredPostings;
                                     for(Post p : posts){
                                         mData.add(p);
                                         Log.d("POST", p.getTitle());
+                                        Log.d("EMAIL", p.getUser().getEmail());
+                                        Log.d("FNAME", p.getUser().getFname());
+                                        Log.d("LNAME", p.getUser().getLname());
                                     }
                                     if(update_view)
                                         PostingAdapter.this.notifyDataSetChanged();
@@ -201,8 +204,10 @@ public long getItemId(int position) {
                 .setText(curPost.getTitle());
         ((TextView)convertView.findViewById(R.id.posting_description))
                 .setText(curPost.getDescription());
+//        ((TextView)convertView.findViewById(R.id.posting_category))
+//                .setText(Preferences.getInstance().getSavedValue(curPost.getCategoryId()));
         ((TextView)convertView.findViewById(R.id.posting_category))
-                .setText(Preferences.getInstance().getSavedValue(curPost.getCategoryId()));
+                .setText(curPost.getCategory().getName());
         ((TextView)convertView.findViewById(R.id.posting_date_time))
                 .setText(Utils.getFormattedDateStr(curPost.getDate()));
         ((TextView) convertView.findViewById(R.id.posting_price))
@@ -239,7 +244,7 @@ public long getItemId(int position) {
 //							filteredPostings.add(posting);
 //					}
                     for(Post post : mData) {
-                        if(Preferences.getInstance().getSavedValue(post.getCategoryId()) != null && Preferences.getInstance().getSavedValue(post.getCategoryId()).equals(filterValue))
+                        if(post.getCategory().getName().equals(filterValue))
                             filteredPostings.add(post);
                     }
 				} else if (filterType.equals("Price Range")) {

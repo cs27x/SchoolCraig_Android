@@ -70,8 +70,10 @@ public class PostingDetailFragment extends Fragment {
         if (mPosting != null) {
             ((TextView) rootView.findViewById(R.id.posting_detail_title))
                     .setText(mPosting.getTitle() + " - $" + mPosting.getCost() );
+//            ((TextView) rootView.findViewById(R.id.posting_detail_category))
+//                    .setText(Preferences.getInstance().getSavedValue(mPosting.getCategoryId()));
             ((TextView) rootView.findViewById(R.id.posting_detail_category))
-                    .setText(Preferences.getInstance().getSavedValue(mPosting.getCategoryId()));
+                    .setText(mPosting.getCategory().getName());
             ((TextView) rootView.findViewById(R.id.event_detail_description))
                     .setText(mPosting.getDescription());
 //            ((TextView) rootView.findViewById(R.id.posting_detail_poster))

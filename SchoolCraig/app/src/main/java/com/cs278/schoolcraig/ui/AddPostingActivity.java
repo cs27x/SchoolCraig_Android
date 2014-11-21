@@ -10,6 +10,8 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
 
+import com.cs278.schoolcraig.data.Category;
+import com.cs278.schoolcraig.data.User;
 import com.cs278.schoolcraig.mgmt.Preferences;
 import com.cs278.schoolcraig.R;
 import com.cs278.schoolcraig.mgmt.UserManagement;
@@ -81,12 +83,22 @@ public class AddPostingActivity extends Activity {
 
 	private void addValidNewPosting() {
 
-        final Post newPost = new Post(newPostingPrice,
-                userMgmt.getCurrentUserId(),
-                newPostingTitle,
-                newPostingDescription,
-                Preferences.getInstance().getSavedValue(newPostingCategory),
-                newPostingCreationDate);
+        final Category category = new Category();
+        category.setId("bd1eb589-f3d6-47c0-92f4-777a5934f610");
+        category.setName(newPostingCategory);
+        final User user = new User();
+        user.setId(userMgmt.getCurrentUserId());
+        user.setFname(userMgmt.getCurrentUserFname());
+        user.setLname(userMgmt.getCurrentUserLname());
+        user.setEmail(userMgmt.getCurrentUserEmail());
+
+        final Post newPost = new Post();
+        newPost.setCost(newPostingPrice);
+        newPost.setUser(user);
+        newPost.setTitle(newPostingTitle);
+        newPost.setDescription(newPostingDescription);
+        newPost.setCategory(category);
+        newPost.setDate(newPostingCreationDate);
 
         final SchoolCraigAPI api = RestClient.get();
 

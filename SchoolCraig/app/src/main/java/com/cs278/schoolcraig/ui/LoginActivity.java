@@ -200,6 +200,8 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor>{
                                         userMgmt = UserManagement.getInstance(LoginActivity.this);
                                         userMgmt.addUserId(user.getId());
                                         userMgmt.addUserEmail(user.getEmail());
+                                        userMgmt.addUserFname(user.getFname());
+                                        userMgmt.addUserLname(user.getLname());
 
                                         startPostingListActivity();
                                     }
