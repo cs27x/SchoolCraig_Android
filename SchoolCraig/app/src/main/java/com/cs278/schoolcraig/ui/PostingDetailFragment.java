@@ -10,6 +10,7 @@ import android.widget.TextView;
 import com.cs278.schoolcraig.mgmt.Preferences;
 import com.cs278.schoolcraig.R;
 import com.cs278.schoolcraig.data.Post;
+import com.cs278.schoolcraig.utils.Utils;
 
 /**
  * A fragment representing a single Event detail screen.
@@ -76,10 +77,10 @@ public class PostingDetailFragment extends Fragment {
                     .setText(mPosting.getCategory().getName());
             ((TextView) rootView.findViewById(R.id.event_detail_description))
                     .setText(mPosting.getDescription());
-//            ((TextView) rootView.findViewById(R.id.posting_detail_poster))
-//                    .setText(mPosting.getPoster());
+            ((TextView) rootView.findViewById(R.id.posting_detail_poster))
+                    .setText(mPosting.getUser().getEmail());
             ((TextView) rootView.findViewById(R.id.posting_detail_creation_date))
-                    .setText("Posted: " + mPosting.getDate());
+                    .setText("Posted: " + Utils.getFormattedDateStr(mPosting.getDate()));
         }
         return rootView;
     }

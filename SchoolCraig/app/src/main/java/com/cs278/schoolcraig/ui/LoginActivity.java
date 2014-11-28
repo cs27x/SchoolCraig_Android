@@ -30,7 +30,6 @@ import com.cs278.schoolcraig.api.RestClient;
 import com.cs278.schoolcraig.api.SchoolCraigAPI;
 import com.cs278.schoolcraig.api.TaskCallback;
 import com.cs278.schoolcraig.mgmt.UserManagement;
-import com.cs278.schoolcraig.UserRegisterLoginTask;
 import com.cs278.schoolcraig.data.Auth;
 import com.cs278.schoolcraig.data.User;
 
@@ -47,10 +46,6 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor>{
     /**
      * Keep track of the login task to ensure we can cancel it if requested.
      */
-    //private UserLoginTask mAuthTask = null;
-    // my start
-    private UserRegisterLoginTask mRegLoginTask= null;
-    // my end
     private UserManagement userMgmt = null;
 
     // UI references.
@@ -126,12 +121,6 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor>{
      * errors are presented and no actual login attempt is made.
      */
     public void attemptLogin() {
-//        if (mAuthTask != null) {
-//            return;
-//        }
-        if(mRegLoginTask != null){
-            return;
-        }
 
         // Reset errors.
         mEmailView.setError(null);
@@ -177,12 +166,6 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor>{
             // perform the user login attempt.
             showProgress(true);
 
-//            mAuthTask = new UserLoginTask(email, password);
-//            mAuthTask.execute((Void) null);
-            //User user = new User(email, password);
-//            mRegLoginTask = new UserRegisterLoginTask(LoginActivity.this, user);
-//            mRegLoginTask.execute(Utils.LOGIN);
-
             final Auth auth = new Auth(email, password);
             final SchoolCraigAPI api = RestClient.get();
 
@@ -210,6 +193,7 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor>{
                                     public void error(Exception e) {
                                         Log.d("ERROR", e.getMessage().toString());
                                         showProgress(false);
+                                        showUnauthorizedMsg();
                                     }
                                 }
             );
@@ -221,6 +205,15 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor>{
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         this.finish();
         this.startActivity(intent);
+    }
+
+    private void showUnauthorizedMsg(){
+
+        mEmailView.setError(null);
+
+        mEmailView.setError(getString(R.string.error_unauthorized));
+        View focusView = mEmailView;
+        focusView.requestFocus();
     }
 
     private boolean isEmailValid(String email) {

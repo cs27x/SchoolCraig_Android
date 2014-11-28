@@ -11,6 +11,7 @@ import android.widget.EditText;
 import android.widget.Spinner;
 
 import com.cs278.schoolcraig.data.Category;
+import com.cs278.schoolcraig.data.NewPost;
 import com.cs278.schoolcraig.data.User;
 import com.cs278.schoolcraig.mgmt.Preferences;
 import com.cs278.schoolcraig.R;
@@ -76,6 +77,7 @@ public class AddPostingActivity extends Activity {
             this.newPostingCategory = this.postingCategory.getSelectedItem().toString();
             Calendar now = Calendar.getInstance();
             this.newPostingCreationDate = Utils.sdf.format(now.getTime());
+            Log.d("Creation Date", newPostingCreationDate);
             addValidNewPosting();
             finish();
         }
@@ -83,22 +85,12 @@ public class AddPostingActivity extends Activity {
 
 	private void addValidNewPosting() {
 
-        final Category category = new Category();
-        category.setId("bd1eb589-f3d6-47c0-92f4-777a5934f610");
-        category.setName(newPostingCategory);
-        final User user = new User();
-        user.setId(userMgmt.getCurrentUserId());
-        user.setFname(userMgmt.getCurrentUserFname());
-        user.setLname(userMgmt.getCurrentUserLname());
-        user.setEmail(userMgmt.getCurrentUserEmail());
-
-        final Post newPost = new Post();
-        newPost.setCost(newPostingPrice);
-        newPost.setUser(user);
-        newPost.setTitle(newPostingTitle);
-        newPost.setDescription(newPostingDescription);
-        newPost.setCategory(category);
-        newPost.setDate(newPostingCreationDate);
+        final NewPost newPost = new NewPost(newPostingPrice,
+                userMgmt.getCurrentUserId(),
+                newPostingTitle,
+                newPostingDescription,
+                Preferences.getInstance().getSavedValue(newPostingCategory),
+                newPostingCreationDate);
 
         final SchoolCraigAPI api = RestClient.get();
 
@@ -112,15 +104,12 @@ public class AddPostingActivity extends Activity {
                                 @Override
                                 public void success(Void result) {
                                     Log.d("SUCCESS", "post stored");
-                                    //showProgress(false);
-                                    //adapter.addPost(newPost);
                                     backToPostingListActivity();
                                 }
 
                                 @Override
                                 public void error(Exception e) {
                                     Log.d("ERROR", e.getMessage().toString());
-                                    //showProgress(false);
                                 }
                             }
         );

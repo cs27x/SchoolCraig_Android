@@ -2,6 +2,7 @@ package com.cs278.schoolcraig.api;
 
 import com.cs278.schoolcraig.data.Auth;
 import com.cs278.schoolcraig.data.Category;
+import com.cs278.schoolcraig.data.NewPost;
 import com.cs278.schoolcraig.data.Post;
 import com.cs278.schoolcraig.data.User;
 
@@ -26,7 +27,7 @@ public interface SchoolCraigAPI {
     public Category getCategory(@Path("category_id") String cat_id);
 
     @POST("/post")
-    public Void createPost(@Body Post p);
+    public Void createPost(@Body NewPost p);
 
     @GET("/post/all")
     public Collection<Post> getPosts();

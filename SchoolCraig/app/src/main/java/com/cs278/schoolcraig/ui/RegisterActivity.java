@@ -26,7 +26,6 @@ import com.cs278.schoolcraig.api.RestClient;
 import com.cs278.schoolcraig.api.SchoolCraigAPI;
 import com.cs278.schoolcraig.api.TaskCallback;
 import com.cs278.schoolcraig.mgmt.UserManagement;
-import com.cs278.schoolcraig.UserRegisterLoginTask;
 import com.cs278.schoolcraig.data.User;
 
 import java.util.ArrayList;
@@ -35,8 +34,7 @@ import java.util.concurrent.Callable;
 
 
 public class RegisterActivity extends Activity implements LoaderManager.LoaderCallbacks<Cursor> {
-    //    private UserRegisterTask mRegisterTask = null;
-    private UserRegisterLoginTask mRegLoginTask = null;
+
     private UserManagement userMgmt = null;
     private View mProgressView = null;
     private View mRegisterFormView = null;
@@ -90,13 +88,6 @@ public class RegisterActivity extends Activity implements LoaderManager.LoaderCa
      * errors are presented and no actual login attempt is made.
      */
     public void attemptRegister() {
-//        if (mRegisterTask != null) {
-//            return;
-//        }
-
-        if (mRegLoginTask != null) {
-            return;
-        }
 
         // Reset errors.
         regFirstName.setError(null);
@@ -202,10 +193,6 @@ public class RegisterActivity extends Activity implements LoaderManager.LoaderCa
                                     }
                                 }
             );
-
-//            mRegLoginTask = new UserRegisterLoginTask(RegisterActivity.this, user);
-//            ////mRegLoginTask = new UserRegisterLoginTask(RegisterActivity.this, firstName, lastName, email, password);
-//            mRegLoginTask.execute(Utils.REGISTER);
         }
     }
 

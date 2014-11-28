@@ -43,6 +43,7 @@
     <string name="error_existing_email">This email is already registered with a user</string>
     <string name="error_incorrect_password">This password is incorrect</string>
     <string name="error_not_vandy_email">This is not a valid Vanderbilt.edu email</string>
+    <string name="error_unauthorized">Wrong email or password.</string>
 
     <string-array name="filter_options">
         <item>Reset Filters</item>
