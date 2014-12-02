@@ -22,6 +22,7 @@
     <string name="done_string">Done</string>
     <string name="update_string">Update</string>
     <string name="logout_string">Logout</string>
+    <string name="delete_string">Delete Post</string>
     <string name="dollar_sign">$</string>
     <string name="to_dollar_sign">to $</string>
     <string name="initial_price_range_val">0.00</string>
@@ -50,6 +51,7 @@
         <item>Category</item>
         <item>Price Range</item>
         <item>By Date</item>
+        <item>My Posts</item>
     </string-array>
 
     <string name="title_activity_register">Register</string>

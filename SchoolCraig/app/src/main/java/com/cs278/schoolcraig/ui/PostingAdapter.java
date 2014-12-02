@@ -18,6 +18,7 @@ import com.cs278.schoolcraig.api.SchoolCraigAPI;
 import com.cs278.schoolcraig.api.TaskCallback;
 import com.cs278.schoolcraig.data.Post;
 import com.cs278.schoolcraig.data.Category;
+import com.cs278.schoolcraig.mgmt.UserManagement;
 import com.cs278.schoolcraig.utils.Utils;
 
 import java.util.ArrayList;
@@ -52,6 +53,7 @@ public class PostingAdapter extends BaseAdapter implements Filterable {
         this.mData = new ArrayList<Post>();
 	    getFilter();
 		initializePossibleCategories();
+        // data will be loaded onResume()
         //loadDataFromBackendUsingAPI(true);
 	}
 
@@ -121,8 +123,18 @@ public class PostingAdapter extends BaseAdapter implements Filterable {
         );
 	}
 
+    public void clearData(){
+        mData.clear();
+    }
+
     public void addPost(Post newPost){
         this.mData.add(newPost);
+        this.notifyDataSetChanged();
+    }
+
+    public void removePost(Post post){
+        if(mData.contains(post))
+            this.mData.remove(post);
         this.notifyDataSetChanged();
     }
 	
@@ -203,18 +215,25 @@ public class PostingAdapter extends BaseAdapter implements Filterable {
                             filteredPostings.add(post);
                     }
                 } else if (filterType.equals("By Date")) {
-					Calendar dateToCompare = Calendar.getInstance();
-					dateToCompare.setTime(Utils.getDateFromString(filterValue));
+                    Calendar dateToCompare = Calendar.getInstance();
+                    dateToCompare.setTime(Utils.getDateFromString(filterValue));
 
-                    for(Post post : mData) {
+                    for (Post post : mData) {
                         Calendar postingCal = Calendar.getInstance();
                         postingCal.setTime(Utils.getDateFromString(Utils.getFormattedDateStr(post.getDate())));
 
-                        if(postingCal.get(Calendar.YEAR) == dateToCompare.get(Calendar.YEAR)
+                        if (postingCal.get(Calendar.YEAR) == dateToCompare.get(Calendar.YEAR)
                                 && postingCal.get(Calendar.DAY_OF_YEAR) == dateToCompare.get(Calendar.DAY_OF_YEAR)) {
                             filteredPostings.add(post);
                         }
                     }
+                } else if (filterType.equals("My Posts")){
+
+                    for(Post post : mData) {
+                        if(post.getUser().getEmail().equals(UserManagement.getInstance(mContext).getCurrentUserEmail()))
+                            filteredPostings.add(post);
+                    }
+
 				} else if (filterType.equals("Reset Filters")) {
 
                     loadDataFromBackendUsingAPI(true);

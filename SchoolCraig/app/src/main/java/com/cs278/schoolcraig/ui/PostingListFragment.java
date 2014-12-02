@@ -80,6 +80,8 @@ public class PostingListFragment extends ListFragment {
     	super.onResume();
     	// Update the data in the adapter whenever the list is viewed again.
     	if(!PostingListActivity.filtered) {
+            postingAdapter.clearData();
+            Log.d("LOAD DATA", "onResume(): Loading data");
     		postingAdapter.loadDataFromBackendUsingAPI(true);
     		PostingListActivity.filtered = false;
     	}

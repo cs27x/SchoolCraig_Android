@@ -4,11 +4,27 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
+import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
 
+import com.cs278.schoolcraig.api.CallableTask;
+import com.cs278.schoolcraig.api.RestClient;
+import com.cs278.schoolcraig.api.SchoolCraigAPI;
+import com.cs278.schoolcraig.api.TaskCallback;
+import com.cs278.schoolcraig.data.Category;
+import com.cs278.schoolcraig.data.Post;
+import com.cs278.schoolcraig.mgmt.Preferences;
+import com.cs278.schoolcraig.mgmt.UserManagement;
 import com.cs278.schoolcraig.ui.PostingDetailFragment;
 import com.cs278.schoolcraig.ui.PostingListActivity;
 import com.cs278.schoolcraig.R;
+
+import java.util.Collection;
+import java.util.concurrent.Callable;
 
 
 /**
@@ -21,6 +37,9 @@ import com.cs278.schoolcraig.R;
  * more than a {@link com.cs278.schoolcraig.ui.PostingDetailFragment}.
  */
 public class PostingDetailActivity extends Activity {
+
+    PostingDetailFragment fragment;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,7 +63,7 @@ public class PostingDetailActivity extends Activity {
         	int postingIndex = getIntent().getIntExtra(PostingDetailFragment.ARG_POSTING_INDEX, 0);
             Bundle arguments = new Bundle();
             arguments.putInt(PostingDetailFragment.ARG_POSTING_INDEX, postingIndex);
-            PostingDetailFragment fragment = new PostingDetailFragment();
+            fragment = new PostingDetailFragment();
             fragment.setArguments(arguments);
             getFragmentManager().beginTransaction()
                     .add(R.id.posting_detail_container, fragment)
@@ -52,13 +71,76 @@ public class PostingDetailActivity extends Activity {
         }
     }
 
+    public boolean onCreateOptionsMenu(Menu menu) {
+
+//        View v  = fragment.getView();
+//        TextView tv = (TextView) v.findViewById(R.id.posting_detail_poster);
+//        Log.d("EMAIL TEST", tv.getText().toString());
+
+        Post p = fragment.getmPosting();
+        UserManagement m = UserManagement.getInstance(fragment.getActivity().getApplicationContext());
+        // make sure a user can only delete his post
+        if(p.getUser().getEmail().equals(m.getCurrentUserEmail())) {
+
+            MenuInflater inflater = getMenuInflater();
+            inflater.inflate(R.menu.deletemenu, menu);
+            return super.onCreateOptionsMenu(menu);
+        }
+        return false;
+    }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-        if (id == android.R.id.home) {
-            NavUtils.navigateUpTo(this, new Intent(this, PostingListActivity.class));
-            return true;
+
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                NavUtils.navigateUpTo(this, new Intent(this, PostingListActivity.class));
+                return true;
+            case R.id.delete:
+                // TODO verify if a user wants to delete a post
+
+                return deletePost();
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private boolean deletePost(){
+
+        final Post toDelete = fragment.getmPosting();
+        final SchoolCraigAPI api = RestClient.get();
+        CallableTask.invoke(new Callable<Void>() {
+                                @Override
+                                public Void call() throws Exception {
+                                    api.deletePost(toDelete.getId());
+                                    return null;
+                                }
+                            }, new TaskCallback<Void>() {
+
+                                @Override
+                                public void success(Void result) {
+                                    Log.d("SUCCESS", "post deleted");
+                                    // if Activity is filtered, we won't reload data
+                                    // so delete post from adapter
+                                    if (PostingListActivity.filtered){
+                                        PostingAdapter.getInstance(fragment.getActivity().getApplicationContext())
+                                                .removePost(toDelete);
+                                    }
+                                    backToPostingListActivity();
+                                }
+
+                                @Override
+                                public void error(Exception e) {
+                                    Log.d("ERROR", e.getMessage().toString());
+                                }
+                            }
+        );
+        return true;
+    }
+
+    private void backToPostingListActivity() {
+        Intent intent = new Intent(PostingDetailActivity.this, PostingListActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        this.finish();
+        this.startActivity(intent);
     }
 }
