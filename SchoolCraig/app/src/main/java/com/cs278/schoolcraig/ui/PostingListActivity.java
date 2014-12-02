@@ -11,7 +11,13 @@ import android.view.View;
 import android.widget.Button;
 
 import com.cs278.schoolcraig.R;
+import com.cs278.schoolcraig.api.CallableTask;
+import com.cs278.schoolcraig.api.RestClient;
+import com.cs278.schoolcraig.api.SchoolCraigAPI;
+import com.cs278.schoolcraig.api.TaskCallback;
 import com.cs278.schoolcraig.mgmt.UserManagement;
+
+import java.util.concurrent.Callable;
 
 /**
  * An activity representing a list of Events. This activity
@@ -123,15 +129,41 @@ public class PostingListActivity extends Activity
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.logout:
-                userMgmt.clearUserDetails();
-                Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
-                finish();
-                startActivity(intent);
-                return true;
+                return logout();
             case R.id.update:
                 postAdapter.loadDataFromBackendUsingAPI(true);
                 return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private boolean logout(){
+
+        final SchoolCraigAPI api = RestClient.get();
+        CallableTask.invoke(new Callable<Void>() {
+                                @Override
+                                public Void call() throws Exception {
+                                    api.deauthUser();
+                                    return null;
+                                }
+                            }, new TaskCallback<Void>() {
+
+                                @Override
+                                public void success(Void result) {
+                                    Log.d("SUCCESS", "logout successful");
+
+                                    userMgmt.clearUserDetails();
+                                    Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+                                    finish();
+                                    startActivity(intent);
+                                }
+
+                                @Override
+                                public void error(Exception e) {
+                                    Log.d("ERROR", e.getMessage().toString());
+                                }
+                            }
+        );
+        return true;
     }
 }

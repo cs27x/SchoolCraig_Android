@@ -85,6 +85,8 @@ public class AddPostingActivity extends Activity {
 
 	private void addValidNewPosting() {
 
+        Log.d("ADDPOST", "");
+
         final NewPost newPost = new NewPost(newPostingPrice,
                 userMgmt.getCurrentUserId(),
                 newPostingTitle,
@@ -104,6 +106,7 @@ public class AddPostingActivity extends Activity {
                                 @Override
                                 public void success(Void result) {
                                     Log.d("SUCCESS", "post stored");
+
                                     backToPostingListActivity();
                                 }
 

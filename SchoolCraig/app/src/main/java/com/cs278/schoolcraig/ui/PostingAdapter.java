@@ -59,8 +59,6 @@ public class PostingAdapter extends BaseAdapter implements Filterable {
 
 	public void initializePossibleCategories() {
 
-        mData.clear();
-
         final SchoolCraigAPI api = RestClient.get();
         CallableTask.invoke(new Callable<Collection<Category>>() {
                                 @Override
@@ -93,7 +91,8 @@ public class PostingAdapter extends BaseAdapter implements Filterable {
 	}
 
 	public void loadDataFromBackendUsingAPI(final boolean update_view) {
-		mData.clear();
+
+        Log.d("LOADINGFROMAPI", "");
 
         final SchoolCraigAPI api = RestClient.get();
         CallableTask.invoke(new Callable<Collection<Post>>() {
@@ -107,6 +106,7 @@ public class PostingAdapter extends BaseAdapter implements Filterable {
                                 @Override
                                 public void success(Collection<Post> posts) {
                                     Log.d("SUCCESS", "posts retrieved");
+                                    clearData();
                                     for(Post p : posts){
                                         mData.add(p);
                                     }
@@ -123,7 +123,7 @@ public class PostingAdapter extends BaseAdapter implements Filterable {
         );
 	}
 
-    public void clearData(){
+    private void clearData(){
         mData.clear();
     }
 
