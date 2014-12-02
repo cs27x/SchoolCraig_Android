@@ -61,7 +61,7 @@ public class PostingDetailFragment extends Fragment {
 
         if (mPosting != null) {
             ((TextView) rootView.findViewById(R.id.posting_detail_title))
-                    .setText(mPosting.getTitle() + " - $" + mPosting.getCost() );
+                    .setText(mPosting.getTitle() + " - $" + mPosting.getCostString() );
             ((TextView) rootView.findViewById(R.id.posting_detail_category))
                     .setText(mPosting.getCategory().getName());
             ((TextView) rootView.findViewById(R.id.event_detail_description))

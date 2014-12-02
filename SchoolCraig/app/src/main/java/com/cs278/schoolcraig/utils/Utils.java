@@ -13,6 +13,7 @@ import org.joda.time.format.ISODateTimeFormat;
 //import org.joda.time.format.ISODateTimeFormat;
 
 import java.text.DateFormat;
+import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -29,26 +30,11 @@ public class Utils {
     public static final String CREATE_USER = "https://school-craig.herokuapp.com/user";
     public static final String AUTH_USER = "https://school-craig.herokuapp.com/user/auth";
     public static SimpleDateFormat sdf = new SimpleDateFormat("M/d/yyyy h:mm aaa", Locale.US);
-    //public static SimpleDateFormat utcdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ");
     public static DateFormat utcdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ");
-    //public static final String CATEGORY_SHARED_PREFS = "categories";
-
-//    public static DateTime parseUTIString(String date_str){
-//        return ISODateTimeFormat.dateParser().parseDateTime(date_str);
-//    }
-
-//    public static String dateAsISOString(String d){
-//
-//        return utcdf.format(d);
-//    }
+    public static DecimalFormat df = new DecimalFormat("#0.00");
 
     public static String getFormattedDateStr(String utc){
 
-//        DateTime dateTimeUtc = new DateTime(utc, DateTimeZone.UTC);
-//        DateTime dateTimeNashville = dateTimeUtc.withZone(DateTimeZone.forID("America/Chicago"));
-//        return dateTimeNashville.toString();
-
-        //DateTimeFormatter formatter = DateTimeFormat.forPattern("yyyy-MM-dd'T'HH:mm:ssZ").withLocale(Locale.US);
         DateTimeFormatter formatter = ISODateTimeFormat.dateTime();
         DateTime dateTime = formatter.parseDateTime(utc);
         return dateTime.toString("M/d/yyyy h:mm aaa");

@@ -171,7 +171,7 @@ public class PostingAdapter extends BaseAdapter implements Filterable {
         ((TextView)convertView.findViewById(R.id.posting_date_time))
                 .setText(Utils.getFormattedDateStr(curPost.getDate()));
         ((TextView) convertView.findViewById(R.id.posting_price))
-                .setText("$" + curPost.getCost());
+                .setText("$" + curPost.getCostString());
 		return convertView;
 	}
 
