@@ -182,8 +182,8 @@ public class RegisterActivity extends Activity implements LoaderManager.LoaderCa
                                         Log.d("SUCCESS", "user stored");
                                         showProgress(false);
                                         Toast.makeText(context, "Check your email to verify your account.", Toast.LENGTH_LONG);
-                                        //finish();
-                                        backToLoginActivity();
+                                        finish();
+                                        //backToLoginActivity();
                                     }
 
                                     @Override
