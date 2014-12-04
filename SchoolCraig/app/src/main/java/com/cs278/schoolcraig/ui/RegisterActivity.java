@@ -190,7 +190,7 @@ public class RegisterActivity extends Activity implements LoaderManager.LoaderCa
                     public void error(Exception e) {
                         Log.d("ERROR", e.getMessage().toString());
                         showProgress(false);
-                        Toast.makeText(context, "Registration not successful. Ensure you have not already registered or ry again.", Toast.LENGTH_LONG).show();
+                        Toast.makeText(context, "Registration not successful. Ensure you have not already registered or try again.", Toast.LENGTH_LONG).show();
                     }
                 }
             );
