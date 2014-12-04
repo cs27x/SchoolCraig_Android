@@ -173,26 +173,26 @@ public class RegisterActivity extends Activity implements LoaderManager.LoaderCa
             CallableTask.invoke(new Callable<Void>() {
                                     @Override
                                     public Void call() throws Exception {
-                                        api.createUser(user);
-                                        return null;
-                                    }
-                                }, new TaskCallback<Void>() {
-                                    @Override
-                                    public void success(Void result) {
-                                        Log.d("SUCCESS", "user stored");
-                                        showProgress(false);
-                                        Toast.makeText(context, "Check your email to verify your account.", Toast.LENGTH_LONG);
-                                        finish();
-                                        //backToLoginActivity();
-                                    }
+                    api.createUser(user);
+                    return null;
+                    }
+                }, new TaskCallback<Void>() {
+                    @Override
+                    public void success(Void result) {
+                        Log.d("SUCCESS", "user stored");
+                        showProgress(false);
+                        Toast.makeText(context, "Check your email to verify your account.", Toast.LENGTH_LONG).show();
+                        finish();
+                        //backToLoginActivity();
+                    }
 
-                                    @Override
-                                    public void error(Exception e) {
-                                        Log.d("ERROR", e.getMessage().toString());
-                                        showProgress(false);
-                                        Toast.makeText(context, "Registration not successful. Ensure you have not already registered or ry again.", Toast.LENGTH_LONG);
-                                    }
-                                }
+                    @Override
+                    public void error(Exception e) {
+                        Log.d("ERROR", e.getMessage().toString());
+                        showProgress(false);
+                        Toast.makeText(context, "Registration not successful. Ensure you have not already registered or ry again.", Toast.LENGTH_LONG).show();
+                    }
+                }
             );
         }
     }
@@ -295,7 +295,6 @@ public class RegisterActivity extends Activity implements LoaderManager.LoaderCa
         int ADDRESS = 0;
         int IS_PRIMARY = 1;
     }
-
 
     private void addEmailsToAutoComplete(List<String> emailAddressCollection) {
         //Create adapter to tell the AutoCompleteTextView what to show in its dropdown list.
