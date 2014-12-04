@@ -181,7 +181,7 @@ public class RegisterActivity extends Activity implements LoaderManager.LoaderCa
                     public void success(Void result) {
                         Log.d("SUCCESS", "user stored");
                         showProgress(false);
-                        Toast.makeText(context, "Check your email to verify your account.", Toast.LENGTH_LONG).show();
+                        Toast.makeText(context, context.getString(R.string.check_email), Toast.LENGTH_LONG).show();
                         finish();
                         //backToLoginActivity();
                     }
@@ -190,7 +190,7 @@ public class RegisterActivity extends Activity implements LoaderManager.LoaderCa
                     public void error(Exception e) {
                         Log.d("ERROR", e.getMessage().toString());
                         showProgress(false);
-                        Toast.makeText(context, "Registration not successful. Ensure you have not already registered or ry again.", Toast.LENGTH_LONG).show();
+                        Toast.makeText(context, context.getString(R.string.registration_unsuccessful), Toast.LENGTH_LONG).show();
                     }
                 }
             );

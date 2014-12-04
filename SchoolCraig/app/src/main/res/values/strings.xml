@@ -27,6 +27,10 @@
     <string name="to_dollar_sign">to $</string>
     <string name="initial_price_range_val">0.00</string>
 
+    <!-- String related to logout -->
+    <string name="check_email">Check your email to verify your account.</string>
+    <string name="registration_unsuccessful">Registration not successful. Ensure you have not already registered or try again.</string>
+
     <!-- Strings related to login -->
     <string name="prompt_email">Email</string>
     <string name="prompt_password">Password</string>
