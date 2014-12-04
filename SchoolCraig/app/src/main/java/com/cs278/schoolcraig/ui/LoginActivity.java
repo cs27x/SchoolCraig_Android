@@ -101,14 +101,10 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor>{
 
     private void checkUserLoggedInOrContinue() {
         if(userMgmt.userDetailsExist()) {
-            startPostingListActivityFinishLogin();
+            Intent intent = new Intent(getApplicationContext(), PostingListActivity.class);
+            finish();
+            startActivity(intent);
         }
-    }
-
-    private void startPostingListActivityFinishLogin() {
-        Intent intent = new Intent(getApplicationContext(), PostingListActivity.class);
-        finish();
-        startActivity(intent);
     }
 
     private void populateAutoComplete() {
