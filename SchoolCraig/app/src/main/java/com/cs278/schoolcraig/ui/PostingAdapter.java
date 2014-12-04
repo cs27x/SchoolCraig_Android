@@ -92,8 +92,6 @@ public class PostingAdapter extends BaseAdapter implements Filterable {
 
 	public void loadDataFromBackendUsingAPI(final boolean update_view) {
 
-        Log.d("LOADINGFROMAPI", "");
-
         final SchoolCraigAPI api = RestClient.get();
         CallableTask.invoke(new Callable<Collection<Post>>() {
                                 @Override
