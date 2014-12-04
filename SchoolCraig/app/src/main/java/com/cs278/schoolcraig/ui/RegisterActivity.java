@@ -5,27 +5,28 @@ import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.LoaderManager;
+import android.content.Context;
 import android.content.CursorLoader;
 import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
 import android.net.Uri;
-import android.util.Log;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
+import android.widget.Toast;
 
-import com.cs278.schoolcraig.api.CallableTask;
 import com.cs278.schoolcraig.R;
+import com.cs278.schoolcraig.api.CallableTask;
 import com.cs278.schoolcraig.api.RestClient;
 import com.cs278.schoolcraig.api.SchoolCraigAPI;
 import com.cs278.schoolcraig.api.TaskCallback;
-import com.cs278.schoolcraig.mgmt.UserManagement;
 import com.cs278.schoolcraig.data.User;
 
 import java.util.ArrayList;
@@ -34,8 +35,7 @@ import java.util.concurrent.Callable;
 
 
 public class RegisterActivity extends Activity implements LoaderManager.LoaderCallbacks<Cursor> {
-
-    private UserManagement userMgmt = null;
+    private Context context = null;
     private View mProgressView = null;
     private View mRegisterFormView = null;
 
@@ -49,7 +49,7 @@ public class RegisterActivity extends Activity implements LoaderManager.LoaderCa
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
-        userMgmt = UserManagement.getInstance(getApplicationContext());
+        context = this.getApplicationContext();
 
         regFirstName = (EditText) findViewById(R.id.reg_first_name);
         regLastName = (EditText) findViewById(R.id.reg_last_name);
@@ -70,7 +70,6 @@ public class RegisterActivity extends Activity implements LoaderManager.LoaderCa
         if (intent.hasExtra("pword")) {
             String pword = intent.getStringExtra("pword");
             regPword.setText(pword);
-            regPwordVerify.setText(pword);
         }
     }
 
@@ -182,14 +181,16 @@ public class RegisterActivity extends Activity implements LoaderManager.LoaderCa
                                     public void success(Void result) {
                                         Log.d("SUCCESS", "user stored");
                                         showProgress(false);
-
-                                        backToLoginActivity();
+                                        Toast.makeText(context, "Check your email to verify your account.", Toast.LENGTH_LONG);
+                                        finish();
+                                        //backToLoginActivity();
                                     }
 
                                     @Override
                                     public void error(Exception e) {
                                         Log.d("ERROR", e.getMessage().toString());
                                         showProgress(false);
+                                        Toast.makeText(context, "Registration not successful. Ensure you have not already registered or ry again.", Toast.LENGTH_LONG);
                                     }
                                 }
             );
