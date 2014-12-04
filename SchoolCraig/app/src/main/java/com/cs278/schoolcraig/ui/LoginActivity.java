@@ -62,7 +62,6 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor>{
         Preferences.getInstance().Initialize(this.getApplicationContext());
 
         userMgmt = UserManagement.getInstance(getApplicationContext());
-        checkUserLoggedInOrContinue();
 
         // Set up the login form.
         mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
@@ -84,6 +83,12 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor>{
         mProgressView = findViewById(R.id.login_progress);
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        checkUserLoggedInOrContinue();
+    }
+
     public void onClickRegisterUserButton(View view) {
         Intent intent = new Intent(getApplicationContext(), RegisterActivity.class);
         String email = mEmailView.getText().toString();
@@ -101,14 +106,10 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor>{
 
     private void checkUserLoggedInOrContinue() {
         if(userMgmt.userDetailsExist()) {
-            startPostingListActivityFinishLogin();
+            Intent intent = new Intent(getApplicationContext(), PostingListActivity.class);
+            finish();
+            startActivity(intent);
         }
-    }
-
-    private void startPostingListActivityFinishLogin() {
-        Intent intent = new Intent(getApplicationContext(), PostingListActivity.class);
-        finish();
-        startActivity(intent);
     }
 
     private void populateAutoComplete() {
